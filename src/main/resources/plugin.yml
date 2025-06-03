@@ -1,0 +1,6 @@
+name: KBSkyblock
+version: '1.0.0-SNAPSHOT'
+main: com.kbskyblock.KBSkyblock.KBSkyblock
+api-version: '1.21'
+authors: [ KBSkyblock ]
+description: An quality of life skyblock plugin
