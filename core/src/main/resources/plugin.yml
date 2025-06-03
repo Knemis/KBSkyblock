@@ -1,0 +1,6 @@
+name: core
+version: '1.0.0-SNAPSHOT'
+main: com.kbskyblock.core.Core
+api-version: '1.21'
+authors: [KBSkyblock]
+description: An quality of life skyblock plugin
