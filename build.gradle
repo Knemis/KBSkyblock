@@ -1,60 +1,74 @@
 plugins {
     id 'java'
-    id("maven-publish")
+    id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
 }
+
 allprojects {
     apply plugin: 'java'
     apply plugin: 'maven-publish'
 }
-group = 'com.kbskyblock'
-version = '1.0.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
-    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-    maven { url 'https://repo.codemc.org/repository/maven-public/' }
-    maven { url 'https://jitpack.io' }
+subprojects {
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+    repositories {
+        mavenCentral()
+        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://repo.codemc.org/repository/maven-public/' }
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://repo.papermc.io/repository/maven-public/' }
+    }
+
+    dependencies {
+        implementation 'com.github.CryptoMorin:XSeries:9.8.0'
+        compileOnly 'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT'
+        compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.release = 21
+    }
 }
 
 dependencies {
-    implementation 'com.github.CryptoMorin:XSeries:9.8.0'
-    compileOnly 'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT'
-    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+    subprojects.each { implementation(it) }
 }
 
-tasks {
-    runServer {
-        // Configure the Minecraft version for our task.
-        // This is the only required configuration besides applying the plugin.
-        // Your plugin's jar (or shadowJar if present) will be used automatically.
-        minecraftVersion("1.21")
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.kbskyblock'
+            artifactId = 'KBCore'
+            version = version
+        }
     }
 }
 
-def targetJavaVersion = 21
-java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
-}
+task runServer(type: JavaExec) {
+    dependsOn build
+    group = "Execution"
+    description = "Runs the shadowJar on a test server"
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = "org.bukkit.craftbukkit.Main"
+    args 'nogui'
+    workingDir = file('run')
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release.set(targetJavaVersion)
-    }
-}
-
-processResources {
-    def props = [version: version]
-    inputs.properties props
-    filteringCharset 'UTF-8'
-    filesMatching('plugin.yml') {
-        expand props
+    doFirst {
+        mkdir 'run'
+        copy {
+            from configurations.runtimeClasspath
+            into 'run/plugins'
+        }
     }
 }

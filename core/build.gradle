@@ -1,71 +1,72 @@
+// Top of file
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:7.1.2'
+    }
+}
+
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '8.1.8'
+    id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
 }
-
-group = 'com.kbskyblock'
-version = '1.0.0-SNAPSHOT'
-description = 'KBSkyblock Core'
 
 allprojects {
     apply plugin: 'java'
+    apply plugin: 'maven-publish'
 
-    java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(21)) // Updated from Java 8
-    }
+    group = 'com.kbskyblock'
+    version = '1.0.0-SNAPSHOT'
 
     repositories {
         mavenCentral()
-        mavenLocal()
+        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://repo.codemc.org/repository/maven-public/' }
-        maven { url 'https://repo.rosewooddev.io/repository/public/' }
-        maven { url 'https://repo.papermc.io/repository/maven-public/' }
-        maven { url 'https://nexus.iridiumdevelopment.net/repository/maven-releases/' }
-        maven { url 'https://libraries.minecraft.net' }
+        maven { url 'https://jitpack.io' }
     }
 
     dependencies {
-        // Shaded dependencies
-        implementation 'com.github.CryptoMorin:XSeries:13.3.0' // Updated version
-
-        // Compile-only
-        compileOnly 'org.jetbrains:annotations:26.0.2'
-        compileOnly 'org.projectlombok:lombok:1.18.38'
-        compileOnly 'com.mojang:authlib:1.5.25'
-
-        annotationProcessor 'org.projectlombok:lombok:1.18.38'
+        implementation 'com.github.CryptoMorin:XSeries:9.8.0'
+        compileOnly 'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT'
+        compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
     }
 }
 
-dependencies {
-    // Include all subprojects
-    subprojects.each { implementation(it) }
+subprojects {
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.release = 21
+    }
 }
 
-shadowJar {
-    archiveClassifier = ''
-    // Relocate critical dependencies to avoid conflicts
-    relocate 'com.cryptomorin.xseries', 'com.kbskyblock.shaded.xseries'
-    relocate 'com.fasterxml.jackson', 'com.kbskyblock.shaded.jackson'
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
-
-jar {
+// Server run task
+task runServer(type: JavaExec) {
     dependsOn shadowJar
-    enabled = false
-}
+    group = "Execution"
+    description = "Runs the server with your plugin"
+    classpath = files('run/server.jar') // Path to your server jar
+    mainClass = "org.bukkit.craftbukkit.Main"
+    args 'nogui'
+    workingDir = file('run')
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'com.kbskyblock'
-            artifactId = 'KBCore'
-            version = version
-            artifact shadowJar
+    doFirst {
+        mkdir 'run/plugins'
+        copy {
+            from shadowJar.archiveFile
+            into 'run/plugins'
         }
     }
 }
