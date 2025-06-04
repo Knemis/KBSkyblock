@@ -50,7 +50,7 @@ shadowJar {
     relocate 'com.fasterxml.jackson', 'com.kbskyblock.shaded.jackson'
 }
 
-tasks.withType(JavaCompile).configureEach {
+tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 

@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    // Include multiversion modules
+    project(':multiversion').subprojects.each { implementation(it) }
+
+    // Shaded dependencies
+    implementation 'de.tr7zw:item-nbt-api:2.15.0'
+    implementation 'com.kbskyblock:IridiumColorAPI:1.0.9' // Update group if needed
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.19.0'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.19.0'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.19.0'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.19.0'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.0'
+    implementation 'org.yaml:snakeyaml:2.4'
+    implementation 'io.papermc:paperlib:1.0.8'
+    implementation 'org.apache.commons:commons-lang3:3.17.0'
+
+    // Runtime dependencies
+    compileOnly 'org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT'
+}

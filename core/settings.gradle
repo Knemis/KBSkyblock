@@ -1,1 +1,8 @@
 rootProject.name = 'core'
+
+include 'plugin'
+include 'multiversion'
+// Include all version modules
+file('multiversion').eachDir { dir ->
+    include "multiversion:${dir.name}"
+}
