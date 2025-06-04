@@ -9,8 +9,18 @@ pluginManagement {
 
 rootProject.name = 'KBSkyblock'
 
-include(
-        'core',
-        'colorapi',
-        'teams'
-)
+include 'core'
+include 'colorapi'
+include 'teams'
+
+// Include subprojects of 'core' directly
+include 'core:plugin'
+include 'core:multiversion' // Include the multiversion directory itself as a project
+
+// Include all version modules from core/multiversion
+// Ensure the path for file() is relative to the root project directory
+file('core/multiversion').eachDir { dir ->
+    if (dir.isDirectory()) { // Good practice to check if it's a directory
+        include "core:multiversion:${dir.name}"
+    }
+}
