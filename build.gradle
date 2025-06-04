@@ -4,6 +4,15 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
 }
 
+repositories { // Added repositories block here
+    mavenCentral()
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'https://repo.codemc.org/repository/maven-public/' }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
+}
+
 allprojects {
     apply plugin: 'java'
     apply plugin: 'maven-publish'
@@ -22,9 +31,11 @@ subprojects {
     }
 
     dependencies {
-        implementation 'com.github.CryptoMorin:XSeries:9.8.0'
-        compileOnly 'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT'
-        compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+        if (project.name != 'colorapi') {
+            implementation 'com.github.CryptoMorin:XSeries:9.8.0'
+            compileOnly "io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT" // Changed this line
+            compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+        }
     }
 
     java {
@@ -41,6 +52,7 @@ subprojects {
 
 dependencies {
     subprojects.each { implementation(it) }
+    compileOnly "io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT"
 }
 
 
