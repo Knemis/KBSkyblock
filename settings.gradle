@@ -11,5 +11,6 @@ rootProject.name = 'KBSkyblock'
 
 include(
         'core',
-        'colorapi'
+        'colorapi',
+        'teams'
 )

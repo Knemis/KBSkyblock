@@ -36,7 +36,7 @@ public class IridiumCore extends JavaPlugin {
     private BukkitTask saveTask;
 
     private static IridiumCore instance;
-
+    private TeamManager teamManager;
     /**
      * Constructor used for UnitTests
      */
