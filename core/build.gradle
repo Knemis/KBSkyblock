@@ -56,7 +56,7 @@ subprojects {
 
 // Server run task
 task runServer(type: JavaExec) {
-    dependsOn tasks.getByPath(':plugin:shadowJar')
+    dependsOn ':plugin:shadowJar'
     group = "Execution"
     description = "Runs the server with your plugin"
     classpath = files('run/server.jar') // Path to your server jar
@@ -67,7 +67,7 @@ task runServer(type: JavaExec) {
     doFirst {
         mkdir 'run/plugins'
         copy {
-            from tasks.getByPath(':plugin:shadowJar').archiveFile
+            from project(':plugin').tasks.shadowJar.archiveFile
             into 'run/plugins'
         }
     }

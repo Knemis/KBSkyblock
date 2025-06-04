@@ -1,6 +1,6 @@
 package com.kbskyblock.colorapi.patterns;
 
-import com.iridium.iridiumcolorapi.IridiumColorAPI;
+import com.kbskyblock.colorapi.Colorapi;
 
 import java.util.regex.Matcher;
 
@@ -15,12 +15,13 @@ public class RainbowPattern implements Pattern {
      * @param string The String to which this pattern should be applied to
      * @return The new String with applied pattern
      */
+    @Override
     public String process(String string) {
         Matcher matcher = pattern.matcher(string);
         while (matcher.find()) {
             String saturation = matcher.group(1);
             String content = matcher.group(2);
-            string = string.replace(matcher.group(), IridiumColorAPI.rainbow(content, Float.parseFloat(saturation)));
+            string = string.replace(matcher.group(), Colorapi.rainbow(content, Float.parseFloat(saturation)));
         }
         return string;
     }

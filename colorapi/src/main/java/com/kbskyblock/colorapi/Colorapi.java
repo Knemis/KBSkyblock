@@ -8,6 +8,7 @@ import com.kbskyblock.colorapi.patterns.SolidPattern;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Colorapi {
+public class Colorapi extends JavaPlugin {
 
     /**
      * The current version of the server in the a form of a major version.
