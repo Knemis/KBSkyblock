@@ -1,3 +1,4 @@
+// KBSkyblock/settings.gradle
 
 pluginManagement {
     repositories {
@@ -10,15 +11,5 @@ rootProject.name = 'KBSkyblock'
 
 include(
         'core',
-        'skyblock',
-        'teams',
-        'economy',
-        'enchants',
-        'chunkbusters',
-        'mobcoins',
-        'mockbukkit',
-        'mocknbtapi',
-        'towns',
         'colorapi'
-
 )

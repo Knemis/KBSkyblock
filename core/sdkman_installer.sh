@@ -281,8 +281,8 @@ function infer_platform() {
 		echo "linuxarm64"
 		;;
 	  *)
-		echo "exotic"
-		;;
+	  	echo "exotic"
+	  	;;
 	  esac
 	  ;;
 	Darwin)
@@ -294,8 +294,8 @@ function infer_platform() {
 		echo "darwinarm64"
 		;;
 	  *)
-		echo "darwinx64"
-		;;
+	  	echo "darwinx64"
+	  	;;
 	  esac
 	  ;;
 	MSYS*|MINGW*)
@@ -304,8 +304,8 @@ function infer_platform() {
 		echo "windowsx64"
 		;;
 	  *)
-		echo "exotic"
-		;;
+	  	echo "exotic"
+	  	;;
 	  esac
 	  ;;
 	*)
@@ -476,3 +476,4 @@ echo ""
 echo "    sdk help"
 echo ""
 echo "Enjoy!!!"
+
