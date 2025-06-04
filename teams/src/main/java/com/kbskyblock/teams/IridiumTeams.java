@@ -12,7 +12,7 @@ import com.iridium.iridiumteams.listeners.*;
 import com.iridium.iridiumteams.managers.*;
 import com.iridium.iridiumteams.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumteams.sorting.TeamSorting;
-import de.jeff_media.updatechecker.UpdateChecker;
+// import de.jeff_media.updatechecker.UpdateChecker; // Commented out due to missing dependency
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -321,11 +321,11 @@ public abstract class IridiumTeams<T extends Team, U extends IridiumUser<T>> ext
 
     public void startUpdateChecker(int pluginId) {
         if (getConfiguration().updateChecks) {
-            UpdateChecker.init(this, pluginId)
-                    .checkEveryXHours(24)
-                    .setDownloadLink(pluginId)
-                    .setColoredConsoleOutput(true)
-                    .checkNow();
+            // UpdateChecker.init(this, pluginId) // Commented out due to missing dependency
+            //         .checkEveryXHours(24)
+            //         .setDownloadLink(pluginId)
+            //         .setColoredConsoleOutput(true)
+            //         .checkNow();
         }
     }
 }

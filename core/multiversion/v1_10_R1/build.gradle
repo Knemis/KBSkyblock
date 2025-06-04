@@ -1,4 +1,10 @@
+repositories {
+    maven { url 'https://hub.spigotmc.org/nexus/content/groups/public/' }
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' } // Fallback if not in public
+}
+
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.10.2-R0.1-SNAPSHOT'
-    compileOnly project(':multiversion:common')
+    compileOnly 'org.spigotmc:spigot:1.10.2-R0.1-SNAPSHOT' // For NMS and CraftBukkit
+    // The Bukkit/Spigot API portion might conflict with paper-api from root, will address if it does.
+    compileOnly project(':core:multiversion:common')
 }

@@ -33,9 +33,21 @@ allprojects {
     }
 
     dependencies {
-        implementation 'com.github.cryptomorin:XSeries:9.8.0'
-        compileOnly 'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT'
-        compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+        // Apply these dependencies only if the project is not 'common' or 'default' or 'v1_10_R1'
+        if (project.name != 'common' && project.name != 'default' && project.name != 'v1_10_R1') {
+            implementation 'com.github.cryptomorin:XSeries:9.8.0'
+            compileOnly 'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT'
+            compileOnly('com.github.MilkBowl:VaultAPI:1.7') {
+                exclude group: 'org.bukkit', module: 'bukkit'
+            }
+        } else {
+            // For 'common' and 'default' projects, only apply XSeries and Vault if needed,
+            // but not the conflicting SpigotAPI from this core/build.gradle
+            implementation 'com.github.cryptomorin:XSeries:9.8.0'
+            compileOnly('com.github.MilkBowl:VaultAPI:1.7') {
+                exclude group: 'org.bukkit', module: 'bukkit'
+            }
+        }
     }
 }
 
