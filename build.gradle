@@ -4,14 +4,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.8'
+        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
     }
 }
 
 plugins {
     id 'java'
     id 'java-library'
-    id 'com.github.johnrengelman.shadow' version '8.1.8' apply false
+    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+
 }
 
 allprojects {
@@ -24,6 +25,7 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        maven { url "https://repo.codemc.io/repository/maven-public/" }
         maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
         maven { url 'https://hub.spigotmc.org/nexus/content/groups/public/' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
@@ -86,6 +88,7 @@ subprojects {
         compileOnly 'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT'
         compileOnly 'org.projectlombok:lombok:1.18.30'
         annotationProcessor 'org.projectlombok:lombok:1.18.30'
+        implementation 'de.tr7zw:item-nbt-api:2.12.2'
 
         if (project.path == ':core') {
             implementation project(':colorapi')

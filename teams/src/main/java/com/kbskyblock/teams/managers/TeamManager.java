@@ -1,9 +1,11 @@
-package com.kbskyblock.teams.manager;
+package com.kbskyblock.teams.managers;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.kbskyblock.core.utils.StringUtils;
+import com.kbskyblock.teams.*;
 import com.kbskyblock.teams.api.EnhancementUpdateEvent;
 import com.kbskyblock.teams.configs.BlockValues;
+import com.kbskyblock.teams.database.*;
 import com.kbskyblock.teams.enhancements.Enhancement;
 import com.kbskyblock.teams.enhancements.EnhancementData;
 import com.kbskyblock.teams.missions.Mission;
