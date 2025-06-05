@@ -30,7 +30,7 @@ public class Core extends JavaPlugin {
     private com.kbskyblock.core.Persist persist;
     private NMS nms;
     private MultiVersion multiVersion;
-    private CoreInventory iridiumInventory;
+    private CoreInventory coreInventory;
     @Setter
     @Getter
     private static boolean testing = false;
