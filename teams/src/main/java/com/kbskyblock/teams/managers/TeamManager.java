@@ -1,4 +1,5 @@
-package com.kbskyblock.teams.managers;
+package com.kbskyblock.teams.managers
+s;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.kbskyblock.core.utils.StringUtils;

@@ -1,10 +1,10 @@
 package com.kbskyblock.teams.placeholders;
 
+import com.kbskyblock.core.utils.Placeholder;
 import com.kbskyblock.teams.KBSkyblockTeams;
 import com.kbskyblock.teams.database.KBSkyblockUser;
 import com.kbskyblock.teams.database.Team;
-import com.kbskyblock.core.utils.Placeholder;
-import com.kbskyblock.teams.manager.TeamManager;
+import com.kbskyblock.teams.managers.TeamManager;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 

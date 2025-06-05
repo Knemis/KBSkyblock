@@ -1,4 +1,4 @@
-package com.kbskyblock.teams.manager;
+package com.kbskyblock.teams.managers;
 
 import com.kbskyblock.core.utils.StringUtils;
 import com.kbskyblock.core.utils.TimeUtils;

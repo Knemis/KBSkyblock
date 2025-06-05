@@ -1,4 +1,5 @@
-package com.kbskyblock.teams.manager;
+package com.kbskyblock.teams.managers
+s;
 
 import com.kbskyblock.teams.database.KBSkyblockUser;
 import com.kbskyblock.teams.database.Team;

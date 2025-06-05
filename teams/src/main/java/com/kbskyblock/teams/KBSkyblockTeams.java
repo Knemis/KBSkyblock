@@ -8,7 +8,7 @@ import com.kbskyblock.teams.database.Team;
 import com.kbskyblock.teams.enhancements.Enhancement;
 import com.kbskyblock.teams.enhancements.PotionEnhancementData;
 import com.kbskyblock.teams.listeners.*;
-import com.kbskyblock.teams.manager.*;
+import com.kbskyblock.teams.managers.*;
 import com.kbskyblock.teams.placeholders.ClipPlaceholderAPI;
 import com.kbskyblock.teams.sorting.TeamSorting;
 import lombok.Getter;

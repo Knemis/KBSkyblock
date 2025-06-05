@@ -1,7 +1,11 @@
-package com.kbskyblock.teams.manager;
+package com.kbskyblock.teams.managers;
 
 import com.kbskyblock.core.utils.StringUtils;
 import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.teams.database.TeamMission;
+import com.kbskyblock.teams.database.TeamMissionData;
 import com.kbskyblock.teams.gui.MissionGUI;
 import com.kbskyblock.teams.missions.Mission;
 import com.kbskyblock.teams.missions.MissionData;
