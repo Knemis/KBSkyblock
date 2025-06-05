@@ -82,6 +82,8 @@ project(':core:multiversion:common') {
 }
 
 subprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
     apply plugin: 'com.github.johnrengelman.shadow'
 
     dependencies {
