@@ -1,6 +1,4 @@
-package com.kbskyblock.teams.managers
-s;
-
+package com.kbskyblock.teams.managers;
 import com.kbskyblock.teams.database.KBSkyblockUser;
 import com.kbskyblock.teams.database.Team;
 import org.bukkit.OfflinePlayer;

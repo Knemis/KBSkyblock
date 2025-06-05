@@ -1,5 +1,6 @@
 package com.kbskyblock.core.utils;
 
+import com.kbskyblock.colorapi.Colorapi;
 import com.kbskyblock.core.DefaultFontInfo;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class StringUtils {
      * @return The new String with applied colors
      */
     public static String color(String string) {
-        return IridiumColorAPI.process(string);
+        return Colorapi.process(string);
     }
 
     /**

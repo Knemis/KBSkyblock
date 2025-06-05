@@ -4,6 +4,7 @@ import com.kbskyblock.core.gui.GUI;
 import com.kbskyblock.core.multiversion.CoreInventory;
 import com.kbskyblock.core.multiversion.MultiVersion;
 import com.kbskyblock.core.nms.NMS;
+import com.kbskyblock.teams.managers.TeamManager;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -87,9 +88,9 @@ public class Core extends JavaPlugin {
 
         // Automatically update all inventories
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
-            InventoryHolder inventoryHolder = iridiumInventory.getTopInventory(player).getHolder();
+            InventoryHolder inventoryHolder = CoreInventory.getTopInventory(player).getHolder();
             if (inventoryHolder instanceof GUI) {
-                ((GUI) inventoryHolder).addContent(iridiumInventory.getTopInventory(player));
+                ((GUI) inventoryHolder).addContent(CoreInventory.getTopInventory(player));
             }
         }), 0, 1);
     }
