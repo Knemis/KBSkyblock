@@ -1,4 +1,4 @@
-package com.iridium.iridiumteams.enhancements;
+package com.kbskyblock.teams.enhancements;
 
 import com.cryptomorin.xseries.XPotion;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
-package com.iridium.iridiumcore.nms;
+package com.kbskyblock.core.nms;
 
-import com.iridium.iridiumcore.Color;
+import com.kbskyblock.core.Color;
 import net.minecraft.server.v1_10_R1.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

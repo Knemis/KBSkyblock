@@ -1,10 +1,10 @@
-package com.iridium.iridiumteams.placeholders;
+package com.kbskyblock.teams.placeholders;
 
-import com.iridium.iridiumcore.utils.Placeholder;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
-import com.iridium.iridiumteams.managers.TeamManager;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.core.utils.Placeholder;
+import com.kbskyblock.teams.manager.TeamManager;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,39 +12,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Placeholders<T extends Team, U extends IridiumUser<T>> {
-    private final IridiumTeams<T, U> iridiumTeams;
+public class Placeholders<T extends Team, U extends KBSkyblockUser<T>> {
+    private final KBSkyblockTeams<T, U> teams;
 
-    public Placeholders(IridiumTeams<T, U> iridiumTeams) {
-        this.iridiumTeams = iridiumTeams;
+    public Placeholders(KBSkyblockTeams<T, U> teams) {
+        this.teams = teams;
     }
 
     public List<Placeholder> getDefaultPlaceholders() {
-        return iridiumTeams.getTeamsPlaceholderBuilder().getPlaceholders(Optional.empty());
+        return teams.getTeamsPlaceholderBuilder().getPlaceholders(Optional.empty());
     }
 
     public List<Placeholder> getPlaceholders(@Nullable Player player) {
-        U user = player == null ? null : iridiumTeams.getUserManager().getUser(player);
-        Optional<T> team = user == null ? Optional.empty() : iridiumTeams.getTeamManager().getTeamViaID(user.getTeamID());
-        Optional<T> current = user == null ? Optional.empty() : iridiumTeams.getTeamManager().getTeamViaPlayerLocation(player);
-        List<T> topValue = iridiumTeams.getTeamManager().getTeams(TeamManager.SortType.Value, true);
-        List<T> topExperience = iridiumTeams.getTeamManager().getTeams(TeamManager.SortType.Experience, true);
+        U user = player == null ? null : teams.getUserManager().getUser(player);
+        Optional<T> team = user == null ? Optional.empty() : teams.getTeamManager().getTeamViaID(user.getTeamID());
+        Optional<T> current = user == null ? Optional.empty() : teams.getTeamManager().getTeamViaPlayerLocation(player);
+        List<T> topValue = teams.getTeamManager().getTeams(TeamManager.SortType.Value, true);
+        List<T> topExperience = teams.getTeamManager().getTeams(TeamManager.SortType.Experience, true);
 
         List<Placeholder> placeholders = new ArrayList<>();
 
-        placeholders.addAll(iridiumTeams.getTeamsPlaceholderBuilder().getPlaceholders(team));
-        placeholders.addAll(iridiumTeams.getUserPlaceholderBuilder().getPlaceholders(Optional.ofNullable(user)));
-        for (Placeholder placeholder : iridiumTeams.getTeamsPlaceholderBuilder().getPlaceholders(current)) {
+        placeholders.addAll(teams.getTeamsPlaceholderBuilder().getPlaceholders(team));
+        placeholders.addAll(teams.getUserPlaceholderBuilder().getPlaceholders(Optional.ofNullable(user)));
+        for (Placeholder placeholder : teams.getTeamsPlaceholderBuilder().getPlaceholders(current)) {
             placeholders.add(new Placeholder("current_" + formatPlaceholderKey(placeholder.getKey()), placeholder.getValue()));
         }
 
         for (int i = 1; i <= 20; i++) {
             Optional<T> value = topValue.size() >= i ? Optional.of(topValue.get(i - 1)) : Optional.empty();
             Optional<T> experience = topExperience.size() >= i ? Optional.of(topExperience.get(i - 1)) : Optional.empty();
-            for (Placeholder placeholder : iridiumTeams.getTeamsPlaceholderBuilder().getPlaceholders(value)) {
+            for (Placeholder placeholder : teams.getTeamsPlaceholderBuilder().getPlaceholders(value)) {
                 placeholders.add(new Placeholder("top_value_" + i + "_" + formatPlaceholderKey(placeholder.getKey()), placeholder.getValue()));
             }
-            for (Placeholder placeholder : iridiumTeams.getTeamsPlaceholderBuilder().getPlaceholders(experience)) {
+            for (Placeholder placeholder : teams.getTeamsPlaceholderBuilder().getPlaceholders(experience)) {
                 placeholders.add(new Placeholder("top_experience_" + i + "_" + formatPlaceholderKey(placeholder.getKey()), placeholder.getValue()));
             }
         }

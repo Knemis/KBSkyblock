@@ -1,11 +1,11 @@
 
-package com.iridium.iridiumteams.listeners;
+package com.kbskyblock.teams.listeners;
 
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.SettingType;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
-import com.iridium.iridiumteams.database.TeamSetting;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.SettingType;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.teams.database.TeamSetting;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -14,14 +14,14 @@ import org.bukkit.event.entity.EntityBreakDoorEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 
 @AllArgsConstructor
-public class EntityChangeBlockListener<T extends Team, U extends IridiumUser<T>> implements Listener {
-    private final IridiumTeams<T, U> iridiumTeams;
+public class EntityChangeBlockListener<T extends Team, U extends KBSkyblockUser<T>> implements Listener {
+    private final KBSkyblockTeams<T, U> teams;
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
         if (event.getEntityType() == EntityType.FALLING_BLOCK || event.getEntityType() == EntityType.PLAYER) return;
-        iridiumTeams.getTeamManager().getTeamViaLocation(event.getBlock().getLocation()).ifPresent(team -> {
-            TeamSetting teamSetting = iridiumTeams.getTeamManager().getTeamSetting(team, SettingType.ENTITY_GRIEF.getSettingKey());
+        teams.getTeamManager().getTeamViaLocation(event.getBlock().getLocation()).ifPresent(team -> {
+            TeamSetting teamSetting = teams.getTeamManager().getTeamSetting(team, SettingType.ENTITY_GRIEF.getSettingKey());
             if (teamSetting == null) return;
             if (teamSetting.getValue().equalsIgnoreCase("Disabled")) {
                 event.setCancelled(true);
@@ -31,8 +31,8 @@ public class EntityChangeBlockListener<T extends Team, U extends IridiumUser<T>>
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityBreakDoor(EntityBreakDoorEvent event) {
-        iridiumTeams.getTeamManager().getTeamViaLocation(event.getBlock().getLocation()).ifPresent(team -> {
-            TeamSetting teamSetting = iridiumTeams.getTeamManager().getTeamSetting(team, SettingType.ENTITY_GRIEF.getSettingKey());
+        teams.getTeamManager().getTeamViaLocation(event.getBlock().getLocation()).ifPresent(team -> {
+            TeamSetting teamSetting = teams.getTeamManager().getTeamSetting(team, SettingType.ENTITY_GRIEF.getSettingKey());
             if (teamSetting == null) return;
             if (teamSetting.getValue().equalsIgnoreCase("Disabled")) {
                 event.setCancelled(true);

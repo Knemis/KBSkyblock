@@ -1,6 +1,6 @@
 name: colorapi
-version: '1.0.0-SNAPSHOT'
+version: '${version}'
 main: com.kbskyblock.colorapi.Colorapi
-api-version: '1.21'
+api-version: '1.13'
 authors: [KBSkyblock]
 description: An quality of life skyblock plugin

@@ -1,9 +1,9 @@
-package com.iridium.iridiumcore;
+package com.kbskyblock.core;
 
-import com.iridium.iridiumcore.gui.GUI;
-import com.iridium.iridiumcore.multiversion.IridiumInventory;
-import com.iridium.iridiumcore.multiversion.MultiVersion;
-import com.iridium.iridiumcore.nms.NMS;
+import com.kbskyblock.core.gui.GUI;
+import com.kbskyblock.core.multiversion.CoreInventory;
+import com.kbskyblock.core.multiversion.MultiVersion;
+import com.kbskyblock.core.nms.NMS;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,23 +24,23 @@ import java.io.File;
  */
 @Getter
 @NoArgsConstructor
-public class IridiumCore extends JavaPlugin {
+public class Core extends JavaPlugin {
 
     private Persist persist;
     private NMS nms;
     private MultiVersion multiVersion;
-    private IridiumInventory iridiumInventory;
+    private CoreInventory iridiumInventory;
     @Setter
     @Getter
     private static boolean testing = false;
     private BukkitTask saveTask;
 
-    private static IridiumCore instance;
+    private static Core instance;
 
     /**
      * Constructor used for UnitTests
      */
-    public IridiumCore(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+    public Core(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
         setTesting(true);
         // Disable logging
@@ -165,7 +165,7 @@ public class IridiumCore extends JavaPlugin {
     public void saveConfigs() {
     }
 
-    public static IridiumCore getInstance() {
+    public static Core getInstance() {
         return instance;
     }
 }

@@ -25,8 +25,8 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: "IridiumCore"
-          path: "build/libs/IridiumCore-*.jar"
+          name: "Core"
+          path: "build/libs/Core-*.jar"
 
   update-release:
     needs: build
@@ -40,13 +40,13 @@ jobs:
           file: "build.gradle.kts"
       - uses: actions/download-artifact@v4.3.0
         with:
-          name: "IridiumCore"
+          name: "Core"
           path: "./"
 
       - name: Upload release asset
         uses: softprops/action-gh-release@v2
         with:
-          files: "IridiumCore-*.jar"
+          files: "Core-*.jar"
 
   publish-nexus:
     needs: build
@@ -63,21 +63,21 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v4.3.0
         with:
-          name: "IridiumCore"
+          name: "Core"
           path: "./"
 
-      - name: Find IridiumCore jar
+      - name: Find Core jar
         id: find_jar
         run: |
-          FILE=$(find . -type f -name "IridiumCore-*.jar" | head -n 1)
+          FILE=$(find . -type f -name "Core-*.jar" | head -n 1)
           echo "file=$FILE" >> "$GITHUB_OUTPUT"
 
       - name: Upload to Nexus with curl
         run: |
           curl --location 'https://nexus.iridiumdevelopment.net/service/rest/v1/components?repository=maven-releases' \
           --header 'Authorization: Basic ${{ secrets.NEXUS_AUTH }}' \
-          -F "maven2.groupId=com.iridium" \
-          -F "maven2.artifactId=IridiumCore" \
+          -F "maven2.groupId=com.kbskyblock" \
+          -F "maven2.artifactId=Core" \
           -F "maven2.version=${{ steps.version.outputs.version }}" \
           -F "maven2.generate-pom=true" \
           -F "maven2.asset1=@${{ steps.find_jar.outputs.file }}" \

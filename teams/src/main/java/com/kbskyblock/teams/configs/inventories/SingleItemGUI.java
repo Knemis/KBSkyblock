@@ -1,7 +1,7 @@
-package com.iridium.iridiumteams.configs.inventories;
+package com.kbskyblock.teams.configs.inventories;
 
-import com.iridium.iridiumcore.Background;
-import com.iridium.iridiumcore.Item;
+import com.kbskyblock.core.Background;
+import com.kbskyblock.core.Item;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

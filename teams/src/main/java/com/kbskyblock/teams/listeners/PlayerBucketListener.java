@@ -1,11 +1,11 @@
 
-package com.iridium.iridiumteams.listeners;
+package com.kbskyblock.teams.listeners;
 
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.PermissionType;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.PermissionType;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.core.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,8 +17,8 @@ import org.bukkit.event.player.PlayerBucketFillEvent;
 import java.util.Optional;
 
 @AllArgsConstructor
-public class PlayerBucketListener<T extends Team, U extends IridiumUser<T>> implements Listener {
-    private final IridiumTeams<T, U> iridiumTeams;
+public class PlayerBucketListener<T extends Team, U extends KBSkyblockUser<T>> implements Listener {
+    private final KBSkyblockTeams<T, U> teams;
 
     @EventHandler(ignoreCancelled = true)
     public void onBucketEmptyEvent(PlayerBucketEmptyEvent event) {
@@ -32,12 +32,12 @@ public class PlayerBucketListener<T extends Team, U extends IridiumUser<T>> impl
 
     public void onBucketEvent(PlayerBucketEvent event) {
         Player player = event.getPlayer();
-        U user = iridiumTeams.getUserManager().getUser(player);
-        Optional<T> team = iridiumTeams.getTeamManager().getTeamViaPlayerLocation(player, event.getBlock().getLocation());
+        U user = teams.getUserManager().getUser(player);
+        Optional<T> team = teams.getTeamManager().getTeamViaPlayerLocation(player, event.getBlock().getLocation());
         if (team.isPresent()) {
-            if (!iridiumTeams.getTeamManager().getTeamPermission(team.get(), user, PermissionType.BUCKET)) {
-                player.sendMessage(StringUtils.color(iridiumTeams.getMessages().cannotUseBuckets
-                        .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+            if (!teams.getTeamManager().getTeamPermission(team.get(), user, PermissionType.BUCKET)) {
+                player.sendMessage(StringUtils.color(teams.getMessages().cannotUseBuckets
+                        .replace("%prefix%", teams.getConfiguration().prefix)
                 ));
                 event.setCancelled(true);
             }

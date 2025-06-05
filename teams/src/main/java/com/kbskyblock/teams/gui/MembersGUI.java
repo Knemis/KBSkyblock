@@ -1,12 +1,12 @@
-package com.iridium.iridiumteams.gui;
+package com.kbskyblock.teams.gui;
 
-import com.iridium.iridiumcore.gui.PagedGUI;
-import com.iridium.iridiumcore.utils.ItemStackUtils;
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.configs.inventories.NoItemGUI;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.core.gui.PagedGUI;
+import com.kbskyblock.core.utils.ItemStackUtils;
+import com.kbskyblock.core.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -16,29 +16,29 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public class MembersGUI<T extends Team, U extends IridiumUser<T>> extends PagedGUI<U> {
+public class MembersGUI<T extends Team, U extends KBSkyblockUser<T>> extends PagedGUI<U> {
 
-    private final IridiumTeams<T, U> iridiumTeams;
+    private final KBSkyblockTeams<T, U> teams;
     private final T team;
 
-    public MembersGUI(T team, Player player, IridiumTeams<T, U> iridiumTeams) {
+    public MembersGUI(T team, Player player, KBSkyblockTeams<T, U> teams) {
         super(
                 1,
-                iridiumTeams.getInventories().membersGUI.size,
-                iridiumTeams.getInventories().membersGUI.background,
-                iridiumTeams.getInventories().previousPage,
-                iridiumTeams.getInventories().nextPage,
+                teams.getInventories().membersGUI.size,
+                teams.getInventories().membersGUI.background,
+                teams.getInventories().previousPage,
+                teams.getInventories().nextPage,
                 player,
-                iridiumTeams.getInventories().backButton
+                teams.getInventories().backButton
         );
-        this.iridiumTeams = iridiumTeams;
+        this.teams = teams;
         this.team = team;
     }
 
     @NotNull
     @Override
     public Inventory getInventory() {
-        NoItemGUI noItemGUI = iridiumTeams.getInventories().membersGUI;
+        NoItemGUI noItemGUI = teams.getInventories().membersGUI;
         Inventory inventory = Bukkit.createInventory(this, getSize(), StringUtils.color(noItemGUI.title));
         addContent(inventory);
         return inventory;
@@ -46,12 +46,12 @@ public class MembersGUI<T extends Team, U extends IridiumUser<T>> extends PagedG
 
     @Override
     public Collection<U> getPageObjects() {
-        return iridiumTeams.getTeamManager().getTeamMembers(team);
+        return teams.getTeamManager().getTeamMembers(team);
     }
 
     @Override
     public ItemStack getItemStack(U user) {
-        return ItemStackUtils.makeItem(iridiumTeams.getInventories().membersGUI.item, iridiumTeams.getUserPlaceholderBuilder().getPlaceholders(user));
+        return ItemStackUtils.makeItem(teams.getInventories().membersGUI.item, teams.getUserPlaceholderBuilder().getPlaceholders(user));
     }
 
     @Override
@@ -64,13 +64,13 @@ public class MembersGUI<T extends Team, U extends IridiumUser<T>> extends PagedG
         switch (event.getClick()) {
             case LEFT:
                 if (user.getUserRank() != 1) {
-                    iridiumTeams.getCommandManager().executeCommand(event.getWhoClicked(), iridiumTeams.getCommands().demoteCommand, new String[]{user.getName()});
+                    teams.getCommandManager().executeCommand(event.getWhoClicked(), teams.getCommands().demoteCommand, new String[]{user.getName()});
                 } else {
-                    iridiumTeams.getCommandManager().executeCommand(event.getWhoClicked(), iridiumTeams.getCommands().kickCommand, new String[]{user.getName()});
+                    teams.getCommandManager().executeCommand(event.getWhoClicked(), teams.getCommands().kickCommand, new String[]{user.getName()});
                 }
                 break;
             case RIGHT:
-                iridiumTeams.getCommandManager().executeCommand(event.getWhoClicked(), iridiumTeams.getCommands().promoteCommand, new String[]{user.getName()});
+                teams.getCommandManager().executeCommand(event.getWhoClicked(), teams.getCommands().promoteCommand, new String[]{user.getName()});
                 break;
         }
     }

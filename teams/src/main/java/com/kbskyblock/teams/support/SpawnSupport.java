@@ -1,6 +1,6 @@
-package com.iridium.iridiumteams.support;
+package com.kbskyblock.teams.support;
 
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.database.Team;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

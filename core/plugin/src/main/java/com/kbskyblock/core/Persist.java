@@ -1,4 +1,4 @@
-package com.iridium.iridiumcore;
+package com.kbskyblock.core;
 
 import com.cryptomorin.xseries.*;
 import com.fasterxml.jackson.core.JsonFactory;

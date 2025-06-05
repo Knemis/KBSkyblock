@@ -1,14 +1,14 @@
-package com.iridium.iridiumteams.gui;
+package com.kbskyblock.teams.gui;
 
-import com.iridium.iridiumcore.gui.BackGUI;
-import com.iridium.iridiumcore.utils.ItemStackUtils;
-import com.iridium.iridiumcore.utils.Placeholder;
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.configs.Shop;
-import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.configs.Shop;
+import com.kbskyblock.teams.configs.inventories.NoItemGUI;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.core.gui.BackGUI;
+import com.kbskyblock.core.utils.ItemStackUtils;
+import com.kbskyblock.core.utils.Placeholder;
+import com.kbskyblock.core.utils.StringUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -20,26 +20,26 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class ShopCategoryGUI<T extends Team, U extends IridiumUser<T>> extends BackGUI {
-    private final IridiumTeams<T, U> iridiumTeams;
+public class ShopCategoryGUI<T extends Team, U extends KBSkyblockUser<T>> extends BackGUI {
+    private final KBSkyblockTeams<T, U> teams;
     @Getter
     private final String categoryName;
     private final Shop.ShopCategory shopCategory;
     @Getter
     private int page;
 
-    public ShopCategoryGUI(String categoryName, Player player, int page, IridiumTeams<T, U> iridiumTeams) {
-        super(iridiumTeams.getInventories().shopCategoryGUI.background, player, iridiumTeams.getInventories().backButton);
-        this.iridiumTeams = iridiumTeams;
+    public ShopCategoryGUI(String categoryName, Player player, int page, KBSkyblockTeams<T, U> teams) {
+        super(teams.getInventories().shopCategoryGUI.background, player, teams.getInventories().backButton);
+        this.teams = teams;
         this.categoryName = categoryName;
-        this.shopCategory = iridiumTeams.getShop().categories.get(categoryName);
+        this.shopCategory = teams.getShop().categories.get(categoryName);
         this.page = page;
     }
 
     @NotNull
     @Override
     public Inventory getInventory() {
-        NoItemGUI noItemGUI = iridiumTeams.getInventories().shopOverviewGUI;
+        NoItemGUI noItemGUI = teams.getInventories().shopOverviewGUI;
         Inventory inventory = Bukkit.createInventory(this, shopCategory.inventorySize, StringUtils.color(noItemGUI.title.replace("%category_name%", categoryName)));
         addContent(inventory);
         return inventory;
@@ -49,12 +49,12 @@ public class ShopCategoryGUI<T extends Team, U extends IridiumUser<T>> extends B
     public void addContent(Inventory inventory) {
         super.addContent(inventory);
 
-        if (!iridiumTeams.getShop().items.containsKey(categoryName)) {
-            iridiumTeams.getLogger().warning("Shop Category " + categoryName + " Is not configured with any items!");
+        if (!teams.getShop().items.containsKey(categoryName)) {
+            teams.getLogger().warning("Shop Category " + categoryName + " Is not configured with any items!");
             return;
         }
 
-        for (Shop.ShopItem shopItem : iridiumTeams.getShop().items.get(categoryName)) {
+        for (Shop.ShopItem shopItem : teams.getShop().items.get(categoryName)) {
             if (shopItem.page != this.page) continue;
             ItemStack itemStack = shopItem.type.parseItem();
             ItemMeta itemMeta = itemStack.getItemMeta();
@@ -67,22 +67,22 @@ public class ShopCategoryGUI<T extends Team, U extends IridiumUser<T>> extends B
             inventory.setItem(shopItem.slot, itemStack);
         }
 
-        inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(this.iridiumTeams.getInventories().nextPage));
-        inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(this.iridiumTeams.getInventories().previousPage));
+        inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(this.teams.getInventories().nextPage));
+        inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(this.teams.getInventories().previousPage));
     }
 
     private List<Placeholder> getShopLorePlaceholders(Shop.ShopItem item) {
         List<Placeholder> placeholders = new ArrayList<>(Arrays.asList(
-                new Placeholder("amount", iridiumTeams.getShopManager().formatPrice(item.defaultAmount)),
-                new Placeholder("vault_cost", iridiumTeams.getShopManager().formatPrice(item.buyCost.money)),
-                new Placeholder("vault_reward", iridiumTeams.getShopManager().formatPrice(item.sellCost.money)),
+                new Placeholder("amount", teams.getShopManager().formatPrice(item.defaultAmount)),
+                new Placeholder("vault_cost", teams.getShopManager().formatPrice(item.buyCost.money)),
+                new Placeholder("vault_reward", teams.getShopManager().formatPrice(item.sellCost.money)),
                 new Placeholder("minLevel", String.valueOf(item.minLevel))
         ));
         for (Map.Entry<String, Double> bankItem : item.buyCost.bankItems.entrySet()) {
-            placeholders.add(new Placeholder(bankItem.getKey() + "_cost", iridiumTeams.getShopManager().formatPrice(bankItem.getValue())));
+            placeholders.add(new Placeholder(bankItem.getKey() + "_cost", teams.getShopManager().formatPrice(bankItem.getValue())));
         }
         for (Map.Entry<String, Double> bankItem : item.sellCost.bankItems.entrySet()) {
-            placeholders.add(new Placeholder(bankItem.getKey() + "_reward", iridiumTeams.getShopManager().formatPrice(bankItem.getValue())));
+            placeholders.add(new Placeholder(bankItem.getKey() + "_reward", teams.getShopManager().formatPrice(bankItem.getValue())));
         }
         return placeholders;
     }
@@ -92,22 +92,22 @@ public class ShopCategoryGUI<T extends Team, U extends IridiumUser<T>> extends B
         List<Placeholder> placeholders = getShopLorePlaceholders(item);
 
         if (item.buyCost.canPurchase()) {
-            lore.add(iridiumTeams.getShop().buyPriceLore);
+            lore.add(teams.getShop().buyPriceLore);
         } else {
-            lore.add(iridiumTeams.getShop().notPurchasableLore);
+            lore.add(teams.getShop().notPurchasableLore);
         }
 
         if(item.minLevel > 1) {
-            lore.add(iridiumTeams.getShop().levelRequirementLore);
+            lore.add(teams.getShop().levelRequirementLore);
         }
 
         if (item.sellCost.canPurchase()) {
-            lore.add(iridiumTeams.getShop().sellRewardLore);
+            lore.add(teams.getShop().sellRewardLore);
         } else {
-            lore.add(iridiumTeams.getShop().notSellableLore);
+            lore.add(teams.getShop().notSellableLore);
         }
 
-        lore.addAll(iridiumTeams.getShop().shopItemLore);
+        lore.addAll(teams.getShop().shopItemLore);
 
         return StringUtils.color(StringUtils.processMultiplePlaceholders(lore, placeholders));
     }
@@ -128,7 +128,7 @@ public class ShopCategoryGUI<T extends Team, U extends IridiumUser<T>> extends B
             return;
         }
 
-        Optional<Shop.ShopItem> shopItem = iridiumTeams.getShop().items.get(categoryName).stream()
+        Optional<Shop.ShopItem> shopItem = teams.getShop().items.get(categoryName).stream()
                 .filter(item -> item.slot == event.getSlot())
                 .filter(item -> item.page == this.page)
                 .findAny();
@@ -140,19 +140,19 @@ public class ShopCategoryGUI<T extends Team, U extends IridiumUser<T>> extends B
         Player player = (Player) event.getWhoClicked();
         int amount = event.isShiftClick() ? shopItem.get().type.parseItem().getMaxStackSize() : shopItem.get().defaultAmount;
         if (event.isLeftClick() && shopItem.get().buyCost.canPurchase()) {
-            iridiumTeams.getShopManager().buy(player, shopItem.get(), amount);
+            teams.getShopManager().buy(player, shopItem.get(), amount);
         } else if (event.isRightClick() && shopItem.get().sellCost.canPurchase()) {
-            iridiumTeams.getShopManager().sell(player, shopItem.get(), amount);
+            teams.getShopManager().sell(player, shopItem.get(), amount);
         } else {
-            iridiumTeams.getShop().failSound.play(player);
+            teams.getShop().failSound.play(player);
         }
     }
 
     private boolean doesNextPageExist() {
-        return iridiumTeams.getShop().items.get(categoryName).stream().anyMatch(item -> item.page == this.page + 1);
+        return teams.getShop().items.get(categoryName).stream().anyMatch(item -> item.page == this.page + 1);
     }
 
     private boolean doesPreviousPageExist() {
-        return iridiumTeams.getShop().items.get(categoryName).stream().anyMatch(item -> item.page == this.page - 1);
+        return teams.getShop().items.get(categoryName).stream().anyMatch(item -> item.page == this.page - 1);
     }
 }

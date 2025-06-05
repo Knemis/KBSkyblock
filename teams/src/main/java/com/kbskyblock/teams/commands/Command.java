@@ -1,11 +1,11 @@
-package com.iridium.iridiumteams.commands;
+package com.kbskyblock.teams.commands;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.iridium.iridiumcore.CooldownProvider;
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.core.CooldownProvider;
+import com.kbskyblock.core.utils.StringUtils;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class Command<T extends Team, U extends IridiumUser<T>> {
+public class Command<T extends Team, U extends KBSkyblockUser<T>> {
 
     public final @NotNull List<String> aliases;
     public final @NotNull String description;
@@ -56,54 +56,54 @@ public class Command<T extends Team, U extends IridiumUser<T>> {
     }
 
 
-    public boolean execute(CommandSender sender, String[] arguments, IridiumTeams<T, U> iridiumTeams) {
+    public boolean execute(CommandSender sender, String[] arguments, KBSkyblockTeams<T, U> teams) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(StringUtils.color(iridiumTeams.getMessages().mustBeAPlayer
-                    .replace("%prefix%", iridiumTeams.getConfiguration().prefix))
+            sender.sendMessage(StringUtils.color(teams.getMessages().mustBeAPlayer
+                    .replace("%prefix%", teams.getConfiguration().prefix))
             );
             return false;
         }
-        return execute(iridiumTeams.getUserManager().getUser((OfflinePlayer) sender), arguments, iridiumTeams);
+        return execute(teams.getUserManager().getUser((OfflinePlayer) sender), arguments, teams);
     }
 
-    public boolean execute(U user, String[] arguments, IridiumTeams<T, U> iridiumTeams) {
-        Optional<T> team = iridiumTeams.getTeamManager().getTeamViaID(user.getTeamID());
+    public boolean execute(U user, String[] arguments, KBSkyblockTeams<T, U> teams) {
+        Optional<T> team = teams.getTeamManager().getTeamViaID(user.getTeamID());
         if (!team.isPresent()) {
-            user.getPlayer().sendMessage(StringUtils.color(iridiumTeams.getMessages().dontHaveTeam
-                    .replace("%prefix%", iridiumTeams.getConfiguration().prefix))
+            user.getPlayer().sendMessage(StringUtils.color(teams.getMessages().dontHaveTeam
+                    .replace("%prefix%", teams.getConfiguration().prefix))
             );
             return false;
         }
-        return execute(user, team.get(), arguments, iridiumTeams);
+        return execute(user, team.get(), arguments, teams);
     }
 
-    public boolean execute(U user, T team, String[] arguments, IridiumTeams<T, U> iridiumTeams) {
+    public boolean execute(U user, T team, String[] arguments, KBSkyblockTeams<T, U> teams) {
         throw new NotImplementedException();
     }
 
-    public boolean hasPermission(CommandSender commandSender, IridiumTeams<T, U> iridiumTeams) {
+    public boolean hasPermission(CommandSender commandSender, KBSkyblockTeams<T, U> teams) {
         return commandSender.hasPermission(permission) || permission.equalsIgnoreCase("");
     }
 
-    public boolean isOnCooldown(CommandSender commandSender, IridiumTeams<T, U> iridiumTeams) {
+    public boolean isOnCooldown(CommandSender commandSender, KBSkyblockTeams<T, U> teams) {
         if (!(commandSender instanceof Player)) return false;
         Player player = (Player) commandSender;
-        U user = iridiumTeams.getUserManager().getUser(player);
+        U user = teams.getUserManager().getUser(player);
         return getCooldownProvider().isOnCooldown(commandSender) && !user.isBypassing();
     }
 
-    public List<String> onTabComplete(CommandSender commandSender, String[] args, IridiumTeams<T, U> iridiumTeams) {
+    public List<String> onTabComplete(CommandSender commandSender, String[] args, KBSkyblockTeams<T, U> teams) {
         if (commandSender instanceof Player) {
-            U user = iridiumTeams.getUserManager().getUser((OfflinePlayer) commandSender);
-            Optional<T> team = iridiumTeams.getTeamManager().getTeamViaID(user.getTeamID());
+            U user = teams.getUserManager().getUser((OfflinePlayer) commandSender);
+            Optional<T> team = teams.getTeamManager().getTeamViaID(user.getTeamID());
             if (team.isPresent()) {
-                return onTabComplete(user, team.get(), args, iridiumTeams);
+                return onTabComplete(user, team.get(), args, teams);
             }
         }
         return Collections.emptyList();
     }
 
-    public List<String> onTabComplete(U user, T team, String[] args, IridiumTeams<T, U> iridiumTeams) {
+    public List<String> onTabComplete(U user, T team, String[] args, KBSkyblockTeams<T, U> teams) {
         return Collections.emptyList();
     }
 

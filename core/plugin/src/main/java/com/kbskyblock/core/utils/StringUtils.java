@@ -1,7 +1,6 @@
-package com.iridium.iridiumcore.utils;
+package com.kbskyblock.core.utils;
 
-import com.iridium.iridiumcolorapi.IridiumColorAPI;
-import com.iridium.iridiumcore.DefaultFontInfo;
+import com.kbskyblock.core.DefaultFontInfo;
 
 import java.util.List;
 import java.util.stream.Collectors;

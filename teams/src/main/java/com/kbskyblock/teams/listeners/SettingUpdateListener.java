@@ -1,10 +1,10 @@
-package com.iridium.iridiumteams.listeners;
+package com.kbskyblock.teams.listeners;
 
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.SettingType;
-import com.iridium.iridiumteams.api.SettingUpdateEvent;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.SettingType;
+import com.kbskyblock.teams.api.SettingUpdateEvent;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
 import lombok.AllArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,19 +12,19 @@ import org.bukkit.event.Listener;
 import java.util.Objects;
 
 @AllArgsConstructor
-public class SettingUpdateListener<T extends Team, U extends IridiumUser<T>> implements Listener {
-    private final IridiumTeams<T, U> iridiumTeams;
+public class SettingUpdateListener<T extends Team, U extends KBSkyblockUser<T>> implements Listener {
+    private final KBSkyblockTeams<T, U> teams;
 
     @EventHandler
     public void onSettingUpdate(SettingUpdateEvent<T, U> event) {
         if (event.getSetting().equalsIgnoreCase(SettingType.TIME.getSettingKey())) {
-            iridiumTeams.getTeamManager().getTeamMembers(event.getTeam()).stream().map(U::getPlayer).filter(Objects::nonNull).forEach(player ->
-                    iridiumTeams.getTeamManager().sendTeamTime(player)
+            teams.getTeamManager().getTeamMembers(event.getTeam()).stream().map(U::getPlayer).filter(Objects::nonNull).forEach(player ->
+                    teams.getTeamManager().sendTeamTime(player)
             );
         }
         if (event.getSetting().equalsIgnoreCase(SettingType.WEATHER.getSettingKey())) {
-            iridiumTeams.getTeamManager().getTeamMembers(event.getTeam()).stream().map(U::getPlayer).filter(Objects::nonNull).forEach(player ->
-                    iridiumTeams.getTeamManager().sendTeamWeather(player)
+            teams.getTeamManager().getTeamMembers(event.getTeam()).stream().map(U::getPlayer).filter(Objects::nonNull).forEach(player ->
+                    teams.getTeamManager().sendTeamWeather(player)
             );
         }
     }

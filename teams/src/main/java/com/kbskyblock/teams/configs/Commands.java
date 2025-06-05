@@ -1,13 +1,13 @@
-package com.iridium.iridiumteams.configs;
+package com.kbskyblock.teams.configs;
 
-import com.iridium.iridiumteams.commands.*;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.commands.*;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
 
 import java.util.Arrays;
 import java.util.Collections;
 
-public class Commands<T extends Team, U extends IridiumUser<T>> {
+public class Commands<T extends Team, U extends KBSkyblockUser<T>> {
     public AboutCommand<T, U> aboutCommand;
     public CreateCommand<T, U> createCommand;
     public MembersCommand<T, U> membersCommand;

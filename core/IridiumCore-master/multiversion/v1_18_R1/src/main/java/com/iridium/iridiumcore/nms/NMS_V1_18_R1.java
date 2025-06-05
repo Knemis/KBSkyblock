@@ -1,6 +1,6 @@
-package com.iridium.iridiumcore.nms;
+package com.kbskyblock.core.nms;
 
-import com.iridium.iridiumcore.Color;
+import com.kbskyblock.core.Color;
 import net.minecraft.network.protocol.game.ClientboundInitializeBorderPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.border.WorldBorder;

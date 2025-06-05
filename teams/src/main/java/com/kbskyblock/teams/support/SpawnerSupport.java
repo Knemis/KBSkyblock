@@ -1,6 +1,6 @@
-package com.iridium.iridiumteams.support;
+package com.kbskyblock.teams.support;
 
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.database.Team;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;

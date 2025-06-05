@@ -1,6 +1,6 @@
-package com.iridium.iridiumteams;
+package com.kbskyblock.teams;
 
-import com.iridium.iridiumcore.utils.Placeholder;
+import com.kbskyblock.core.utils.Placeholder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 

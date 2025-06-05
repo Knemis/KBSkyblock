@@ -1,14 +1,14 @@
-package com.iridium.iridiumteams.configs;
+package com.kbskyblock.teams.configs;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.collect.ImmutableMap;
-import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumteams.Reward;
-import com.iridium.iridiumteams.missions.Mission;
-import com.iridium.iridiumteams.missions.MissionData;
-import com.iridium.iridiumteams.missions.MissionType;
+import com.kbskyblock.core.Item;
+import com.kbskyblock.teams.Reward;
+import com.kbskyblock.teams.missions.Mission;
+import com.kbskyblock.teams.missions.MissionData;
+import com.kbskyblock.teams.missions.MissionType;
 
 import java.util.*;
 

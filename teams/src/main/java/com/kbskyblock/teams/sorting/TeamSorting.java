@@ -1,8 +1,8 @@
-package com.iridium.iridiumteams.sorting;
+package com.kbskyblock.teams.sorting;
 
-import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.core.Item;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.Team;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,13 +17,13 @@ public abstract class TeamSorting<T extends Team> {
     public Item item;
     public boolean enabled;
 
-    public abstract List<T> getSortedTeams(IridiumTeams<T, ?> iridiumTeams);
+    public abstract List<T> getSortedTeams(KBSkyblockTeams<T, ?> teams);
 
     public abstract String getName();
     public abstract double getValue(T team);
 
-    public int getRank(T team, IridiumTeams<T, ?> iridiumTeams) {
-        List<T> teams = getSortedTeams(iridiumTeams);
+    public int getRank(T team, KBSkyblockTeams<T, ?> teams) {
+        List<T> teams = getSortedTeams(teams);
         return teams.indexOf(team) + 1;
     }
 }

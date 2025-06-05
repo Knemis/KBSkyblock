@@ -1,18 +1,16 @@
-package com.iridium.iridiumteams;
+package com.kbskyblock.teams;
 
-import com.iridium.iridiumcore.IridiumCore;
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.bank.BankItem;
-import com.iridium.iridiumteams.configs.*;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
-import com.iridium.iridiumteams.enhancements.Enhancement;
-import com.iridium.iridiumteams.enhancements.PotionEnhancementData;
-import com.iridium.iridiumteams.listeners.*;
-import com.iridium.iridiumteams.managers.*;
-import com.iridium.iridiumteams.placeholders.ClipPlaceholderAPI;
-import com.iridium.iridiumteams.sorting.TeamSorting;
-// import de.jeff_media.updatechecker.UpdateChecker; // Commented out due to missing dependency
+import com.kbskyblock.core.utils.StringUtils;
+import com.kbskyblock.teams.bank.BankItem;
+import com.kbskyblock.teams.configs.*;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.teams.enhancements.Enhancement;
+import com.kbskyblock.teams.enhancements.PotionEnhancementData;
+import com.kbskyblock.teams.listeners.*;
+import com.kbskyblock.teams.manager.*;
+import com.kbskyblock.teams.placeholders.ClipPlaceholderAPI;
+import com.kbskyblock.teams.sorting.TeamSorting;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,7 +29,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
-public abstract class IridiumTeams<T extends Team, U extends IridiumUser<T>> extends IridiumCore {
+public abstract class KBSkyblockTeams<T extends Team, U extends KBSkyblockUser<T>> extends Core {
 
     private final Map<Integer, UserRank> userRanks = new HashMap<>();
     private final Map<String, Permission> permissionList = new HashMap<>();
@@ -44,7 +42,7 @@ public abstract class IridiumTeams<T extends Team, U extends IridiumUser<T>> ext
     @Setter
     private boolean recalculating = false;
 
-    public IridiumTeams(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+    public KBSkyblockTeams(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
     }
 
@@ -97,7 +95,7 @@ public abstract class IridiumTeams<T extends Team, U extends IridiumUser<T>> ext
 
     public abstract TeamManager<T, U> getTeamManager();
 
-    public abstract IridiumUserManager<T, U> getUserManager();
+    public abstract KBSkyblockUserManager<T, U> getUserManager();
 
     public abstract CommandManager<T, U> getCommandManager();
 

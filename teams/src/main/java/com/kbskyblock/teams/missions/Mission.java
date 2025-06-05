@@ -1,4 +1,4 @@
-package com.iridium.iridiumteams.missions;
+package com.kbskyblock.teams.missions;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
-package com.iridium.iridiumteams.database;
+package com.kbskyblock.teams.database;
 
-import com.iridium.iridiumteams.enhancements.EnhancementType;
+import com.kbskyblock.teams.enhancements.EnhancementType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;

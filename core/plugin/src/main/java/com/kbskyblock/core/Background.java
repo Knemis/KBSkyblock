@@ -1,4 +1,4 @@
-package com.iridium.iridiumcore;
+package com.kbskyblock.core;
 
 import com.cryptomorin.xseries.XMaterial;
 import lombok.NoArgsConstructor;

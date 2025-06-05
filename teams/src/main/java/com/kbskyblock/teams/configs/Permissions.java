@@ -1,8 +1,8 @@
-package com.iridium.iridiumteams.configs;
+package com.kbskyblock.teams.configs;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumteams.Permission;
+import com.kbskyblock.core.Item;
+import com.kbskyblock.teams.Permission;
 
 import java.util.Arrays;
 

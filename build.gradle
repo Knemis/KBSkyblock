@@ -1,99 +1,47 @@
 plugins {
     id 'java'
-    id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '7.1.2' // apply false removed
-}
-
-repositories {
-    mavenCentral()
-    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-    maven { url 'https://repo.codemc.org/repository/maven-public/' }
-    maven { url 'https://jitpack.io' }
-    maven { url 'https://repo.papermc.io/repository/maven-public/' }
+    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
 }
 
 allprojects {
     apply plugin: 'java'
-    apply plugin: 'maven-publish'
-    // The shadow plugin will be applied via the root project's plugin block if needed by subprojects for configuration.
-    // Subprojects can configure their shadowJar task if the plugin is applied to them individually,
-    // but for a root project aggregating others, applying shadow at the root is common.
-}
-
-subprojects {
-    // apply plugin: 'com.github.johnrengelman.shadow' // Removed from here
+    group = 'com.kbskyblock'
+    version = '1.0.0-SNAPSHOT'
 
     repositories {
         mavenCentral()
         maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+        maven { url 'https://hub.spigotmc.org/nexus/content/groups/public/' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        maven { url 'https://repo.codemc.org/repository/maven-public/' }
         maven { url 'https://jitpack.io' }
-        maven { url 'https://repo.papermc.io/repository/maven-public/' }
-    }
-
-    dependencies {
-        if (project.name != 'colorapi') {
-            // implementation 'com.github.CryptoMorin:XSeries:9.8.0' // Commented out
-            compileOnly "io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT"
-            compileOnly('com.github.MilkBowl:VaultAPI:1.7') {
-                exclude group: 'org.bukkit', module: 'bukkit'
-            }
-        }
     }
 
     java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(21)
+        def javaVersion = JavaVersion.toVersion(project.findProperty('targetJavaVersion') ?: 17)
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+        if (JavaVersion.current() < javaVersion) {
+            toolchain.languageVersion = JavaLanguageVersion.of(17)
         }
     }
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
-        options.release = 21
+        options.release.set(17)
     }
 }
 
-dependencies {
-    compileOnly "io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT"
-}
+subprojects {
+    apply plugin: 'com.github.johnrengelman.shadow'
 
-
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'com.kbskyblock'
-            artifactId = 'KBCore' // This artifactId suggests the root project is KBCore
-            version = version
-        }
+    dependencies {
+        compileOnly 'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT'
     }
-}
 
-// shadowJar configuration can be added here if needed, for example:
-// shadowJar {
-//    archiveBaseName.set('KBSkyblock-Shadow')
-//    archiveClassifier.set('') // To produce the main artifact as the shadow JAR
-//    mergeServiceFiles()
-// }
-
-
-task runServer(type: JavaExec) {
-    dependsOn build // Should ideally depend on shadowJar if that's the runnable artifact
-    group = "Execution"
-    description = "Runs the shadowJar on a test server"
-    classpath = sourceSets.main.runtimeClasspath // This might need to point to the shadowJar output
-    mainClass = "org.bukkit.craftbukkit.Main"
-    args 'nogui'
-    workingDir = file('run')
-
-    doFirst {
-        mkdir 'run'
-        copy {
-            // This should copy the shadowJar to the plugins folder
-            from tasks.named('shadowJar').flatMap { it.outputs.files.singleFile }
-            into 'run/plugins'
-        }
+    shadowJar {
+        archiveClassifier.set('')
+        mergeServiceFiles()
+        exclude 'META-INF/*.DSA'
+        exclude 'META-INF/*.SF'
     }
 }

@@ -1,6 +1,6 @@
-package com.iridium.iridiumteams.listeners;
+package com.kbskyblock.teams.listeners;
 
-import com.iridium.iridiumcore.gui.GUI;
+import com.kbskyblock.core.gui.GUI;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;

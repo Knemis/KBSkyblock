@@ -1,4 +1,4 @@
-package com.iridium.iridiumteams.configs;
+package com.kbskyblock.teams.configs;
 
 public class Messages {
     public String reloaded;
@@ -168,7 +168,7 @@ public class Messages {
     public String topThirdColor;
 
     public Messages() {
-        this("Team", "t", "IridiumTeams", "&c");
+        this("Team", "t", "KBSkyblockTeams", "&c");
     }
 
     public Messages(String team, String command, String pluginName, String color) {

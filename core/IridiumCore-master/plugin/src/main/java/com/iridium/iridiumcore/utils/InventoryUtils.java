@@ -1,7 +1,7 @@
-package com.iridium.iridiumcore.utils;
+package com.kbskyblock.core.utils;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.iridium.iridiumcore.Background;
+import com.kbskyblock.core.Background;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 

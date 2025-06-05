@@ -1,26 +1,22 @@
-package com.iridium.iridiumteams.support;
+package com.kbskyblock.teams.support;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
-// import dev.rosewood.rosestacker.api.RoseStackerAPI; // Commented out
-// import dev.rosewood.rosestacker.stack.StackedBlock; // Commented out
-// import dev.rosewood.rosestacker.stack.StackedSpawner; // Commented out
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class RoseStackerSupport<T extends Team, U extends IridiumUser<T>> implements StackerSupport<T>, SpawnerSupport<T> {
+public class RoseStackerSupport<T extends Team, U extends KBSkyblockUser<T>> implements StackerSupport<T>, SpawnerSupport<T> {
 
-    private final IridiumTeams<T, U> iridiumTeams;
+    private final KBSkyblockTeams<T, U> teams;
 
-    public RoseStackerSupport(IridiumTeams<T, U> iridiumTeams) {
-        this.iridiumTeams = iridiumTeams;
+    public RoseStackerSupport(KBSkyblockTeams<T, U> teams) {
+        this.teams = teams;
     }
 
     @Override
@@ -89,7 +85,7 @@ public class RoseStackerSupport<T extends Team, U extends IridiumUser<T>> implem
     public Map<XMaterial, Integer> getBlocksStacked(Chunk chunk, T team) {
         HashMap<XMaterial, Integer> hashMap = new HashMap<>();
         // RoseStackerAPI.getInstance().getStackedBlocks(Collections.singletonList(chunk)).forEach(stackedBlock -> { // Commented out
-        //     if(!iridiumTeams.getTeamManager().isInTeam(team, stackedBlock.getLocation())) return;
+        //     if(!teams.getTeamManager().isInTeam(team, stackedBlock.getLocation())) return;
         //     XMaterial xMaterial = XMaterial.matchXMaterial(stackedBlock.getStackSettings().getType());
         //     hashMap.put(xMaterial, hashMap.getOrDefault(xMaterial, 0) + stackedBlock.getStackSize());
         // });
@@ -106,7 +102,7 @@ public class RoseStackerSupport<T extends Team, U extends IridiumUser<T>> implem
     public int getExtraBlocks(T team, XMaterial material, List<Block> blocks) {
         int stackedBlocks = 0;
         // for (StackedBlock stackedBlock : getStackedBlocks(blocks)) { // Commented out
-        //     if (!iridiumTeams.getTeamManager().isInTeam(team, stackedBlock.getLocation())) continue;
+        //     if (!teams.getTeamManager().isInTeam(team, stackedBlock.getLocation())) continue;
         //     if (material != XMaterial.matchXMaterial(stackedBlock.getBlock().getType())) continue;
         //     stackedBlocks += (stackedBlock.getStackSize() - 1);
         // }
@@ -117,7 +113,7 @@ public class RoseStackerSupport<T extends Team, U extends IridiumUser<T>> implem
     public int getExtraSpawners(T team, EntityType entityType, List<CreatureSpawner> spawners) {
         int stackedSpawners = 0;
         // for (StackedSpawner stackedSpawner : getStackedSpawners(spawners)) { // Commented out
-        //     if (!iridiumTeams.getTeamManager().isInTeam(team, stackedSpawner.getLocation())) continue;
+        //     if (!teams.getTeamManager().isInTeam(team, stackedSpawner.getLocation())) continue;
         //     if (stackedSpawner.getSpawner().getSpawnedType() != entityType) continue;
         //     stackedSpawners += (stackedSpawner.getStackSize() - 1);
         // }

@@ -1,9 +1,9 @@
-package com.iridium.iridiumteams.listeners;
+package com.kbskyblock.teams.listeners;
 
 import com.google.common.collect.ImmutableMap;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
 import lombok.AllArgsConstructor;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -16,8 +16,8 @@ import java.util.Map;
 import java.util.Optional;
 
 @AllArgsConstructor
-public class BlockPistonListener<T extends Team, U extends IridiumUser<T>> implements Listener {
-    private final IridiumTeams<T, U> iridiumTeams;
+public class BlockPistonListener<T extends Team, U extends KBSkyblockUser<T>> implements Listener {
+    private final KBSkyblockTeams<T, U> teams;
 
     private static final Map<BlockFace, int[]> offsets = ImmutableMap.<BlockFace, int[]>builder()
             .put(BlockFace.EAST, new int[]{1, 0, 0})
@@ -30,11 +30,11 @@ public class BlockPistonListener<T extends Team, U extends IridiumUser<T>> imple
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
-        Optional<T> team = iridiumTeams.getTeamManager().getTeamViaLocation(event.getBlock().getLocation());
+        Optional<T> team = teams.getTeamManager().getTeamViaLocation(event.getBlock().getLocation());
         int currentTeam = team.map(T::getId).orElse(0);
         for (Block block : event.getBlocks()) {
             int[] offset = offsets.get(event.getDirection());
-            Optional<T> newTeam = iridiumTeams.getTeamManager().getTeamViaLocation(block.getLocation().add(offset[0], offset[1], offset[2]), team);
+            Optional<T> newTeam = teams.getTeamManager().getTeamViaLocation(block.getLocation().add(offset[0], offset[1], offset[2]), team);
             if (newTeam.map(T::getId).orElse(0) != currentTeam) {
                 event.setCancelled(true);
                 return;
@@ -44,10 +44,10 @@ public class BlockPistonListener<T extends Team, U extends IridiumUser<T>> imple
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
-        Optional<T> team = iridiumTeams.getTeamManager().getTeamViaLocation(event.getBlock().getLocation());
+        Optional<T> team = teams.getTeamManager().getTeamViaLocation(event.getBlock().getLocation());
         int currentTeam = team.map(T::getId).orElse(0);
         for (Block block : event.getBlocks()) {
-            Optional<T> newTeam = iridiumTeams.getTeamManager().getTeamViaLocation(block.getLocation(), team);
+            Optional<T> newTeam = teams.getTeamManager().getTeamViaLocation(block.getLocation(), team);
             if (newTeam.map(T::getId).orElse(0) != currentTeam) {
                 event.setCancelled(true);
                 return;

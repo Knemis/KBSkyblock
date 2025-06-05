@@ -1,4 +1,4 @@
-package com.iridium.iridiumcore.multiversion;
+package com.kbskyblock.core.multiversion;
 
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Chunk;

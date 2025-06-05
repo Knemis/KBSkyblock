@@ -1,32 +1,32 @@
-package com.iridium.iridiumteams.gui;
+package com.kbskyblock.teams.gui;
 
-import com.iridium.iridiumcore.gui.BackGUI;
-import com.iridium.iridiumcore.utils.ItemStackUtils;
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.configs.inventories.MissionTypeSelectorInventoryConfig;
-import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.configs.inventories.MissionTypeSelectorInventoryConfig;
+import com.kbskyblock.teams.configs.inventories.NoItemGUI;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.core.gui.BackGUI;
+import com.kbskyblock.core.utils.ItemStackUtils;
+import com.kbskyblock.core.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
-public class MissionTypeSelectorGUI<T extends Team, U extends IridiumUser<T>> extends BackGUI {
+public class MissionTypeSelectorGUI<T extends Team, U extends KBSkyblockUser<T>> extends BackGUI {
 
-    private final IridiumTeams<T, U> iridiumTeams;
+    private final KBSkyblockTeams<T, U> teams;
 
-    public MissionTypeSelectorGUI(Player player, IridiumTeams<T, U> iridiumTeams) {
-        super(iridiumTeams.getInventories().missionTypeSelectorGUI.background, player, iridiumTeams.getInventories().backButton);
-        this.iridiumTeams = iridiumTeams;
+    public MissionTypeSelectorGUI(Player player, KBSkyblockTeams<T, U> teams) {
+        super(teams.getInventories().missionTypeSelectorGUI.background, player, teams.getInventories().backButton);
+        this.teams = teams;
     }
 
     @NotNull
     @Override
     public Inventory getInventory() {
-        NoItemGUI noItemGUI = iridiumTeams.getInventories().missionTypeSelectorGUI;
+        NoItemGUI noItemGUI = teams.getInventories().missionTypeSelectorGUI;
         Inventory inventory = Bukkit.createInventory(this, noItemGUI.size, StringUtils.color(noItemGUI.title));
         addContent(inventory);
         return inventory;
@@ -37,7 +37,7 @@ public class MissionTypeSelectorGUI<T extends Team, U extends IridiumUser<T>> ex
         super.addContent(inventory);
 
 
-        MissionTypeSelectorInventoryConfig missionTypeSelectorInventoryConfig = iridiumTeams.getInventories().missionTypeSelectorGUI;
+        MissionTypeSelectorInventoryConfig missionTypeSelectorInventoryConfig = teams.getInventories().missionTypeSelectorGUI;
         if (missionTypeSelectorInventoryConfig.daily.enabled) {
             inventory.setItem(missionTypeSelectorInventoryConfig.daily.item.slot, ItemStackUtils.makeItem(missionTypeSelectorInventoryConfig.daily.item));
         }
@@ -58,22 +58,22 @@ public class MissionTypeSelectorGUI<T extends Team, U extends IridiumUser<T>> ex
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         super.onInventoryClick(event);
-        MissionTypeSelectorInventoryConfig missionTypeSelectorInventoryConfig = iridiumTeams.getInventories().missionTypeSelectorGUI;
+        MissionTypeSelectorInventoryConfig missionTypeSelectorInventoryConfig = teams.getInventories().missionTypeSelectorGUI;
 
         if (event.getSlot() == missionTypeSelectorInventoryConfig.daily.item.slot && missionTypeSelectorInventoryConfig.daily.enabled) {
-            iridiumTeams.getCommandManager().executeCommand(event.getWhoClicked(), iridiumTeams.getCommands().missionsCommand, new String[]{"Daily"});
+            teams.getCommandManager().executeCommand(event.getWhoClicked(), teams.getCommands().missionsCommand, new String[]{"Daily"});
         }
 
         if (event.getSlot() == missionTypeSelectorInventoryConfig.weekly.item.slot && missionTypeSelectorInventoryConfig.weekly.enabled) {
-            iridiumTeams.getCommandManager().executeCommand(event.getWhoClicked(), iridiumTeams.getCommands().missionsCommand, new String[]{"Weekly"});
+            teams.getCommandManager().executeCommand(event.getWhoClicked(), teams.getCommands().missionsCommand, new String[]{"Weekly"});
         }
 
         if (event.getSlot() == missionTypeSelectorInventoryConfig.infinite.item.slot && missionTypeSelectorInventoryConfig.infinite.enabled) {
-            iridiumTeams.getCommandManager().executeCommand(event.getWhoClicked(), iridiumTeams.getCommands().missionsCommand, new String[]{"Infinite"});
+            teams.getCommandManager().executeCommand(event.getWhoClicked(), teams.getCommands().missionsCommand, new String[]{"Infinite"});
         }
 
         if (event.getSlot() == missionTypeSelectorInventoryConfig.once.item.slot && missionTypeSelectorInventoryConfig.once.enabled) {
-            iridiumTeams.getCommandManager().executeCommand(event.getWhoClicked(), iridiumTeams.getCommands().missionsCommand, new String[]{"Once"});
+            teams.getCommandManager().executeCommand(event.getWhoClicked(), teams.getCommands().missionsCommand, new String[]{"Once"});
         }
     }
 }

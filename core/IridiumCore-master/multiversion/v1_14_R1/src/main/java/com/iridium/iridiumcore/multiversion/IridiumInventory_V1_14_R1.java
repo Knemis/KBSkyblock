@@ -1,9 +1,9 @@
-package com.iridium.iridiumcore.multiversion;
+package com.kbskyblock.core.multiversion;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-public class IridiumInventory_V1_14_R1 extends IridiumInventory {
+public class CoreInventory_V1_14_R1 extends CoreInventory {
     @Override
     public Inventory getTopInventory(Player player) {
         return player.getOpenInventory().getTopInventory();

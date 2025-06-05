@@ -1,4 +1,4 @@
-name: teams
+name: KBteams
 version: '1.0.0-SNAPSHOT'
 main: com.kbskyblock.teams.Teams
 api-version: '1.21'

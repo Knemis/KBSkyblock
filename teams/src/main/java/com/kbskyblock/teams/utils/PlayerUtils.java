@@ -1,4 +1,4 @@
-package com.iridium.iridiumteams.utils;
+package com.kbskyblock.teams.utils;
 
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;

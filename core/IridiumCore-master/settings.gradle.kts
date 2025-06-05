@@ -1,4 +1,4 @@
-rootProject.name = "IridiumCore"
+rootProject.name = "Core"
 include("plugin")
 include("multiversion")
 include("multiversion:common")

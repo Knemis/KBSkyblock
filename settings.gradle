@@ -1,5 +1,3 @@
-// KBSkyblock/settings.gradle
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -9,18 +7,46 @@ pluginManagement {
 
 rootProject.name = 'KBSkyblock'
 
+// Main modules
 include 'core'
 include 'colorapi'
 include 'teams'
 
-// Include subprojects of 'core' directly
+// Core submodules
 include 'core:plugin'
-include 'core:multiversion' // Include the multiversion directory itself as a project
+include 'core:multiversion'
+include 'core:api'
+include 'core:common'
 
-// Include all version modules from core/multiversion
-// Ensure the path for file() is relative to the root project directory
-file('core/multiversion').eachDir { dir ->
-    if (dir.isDirectory()) { // Good practice to check if it's a directory
-        include "core:multiversion:${dir.name}"
+// Multiversion modules
+def multiversionDir = file('core/multiversion')
+if (multiversionDir.exists()) {
+    multiversionDir.eachDir { dir ->
+        def moduleName = dir.name
+        if (!moduleName.startsWith('.')) {
+            include "core:multiversion:${moduleName}"
+        }
+    }
+}
+
+// Add submodules for each main module
+['teams', 'colorapi'].each { module ->
+    def moduleDir = file(module)
+    if (moduleDir.exists()) {
+        ['api', 'common', 'plugin'].each { submodule ->
+            def submoduleDir = new File(moduleDir, submodule)
+            if (submoduleDir.exists()) {
+                include "${module}:${submodule}"
+            }
+        }
+    }
+}
+
+// Validate all included projects
+gradle.beforeProject { project ->
+    if (project.projectDir.exists()) {
+        if (!project.projectDir.isDirectory()) {
+            throw new GradleException("Project '${project.path}' directory ${project.projectDir} is not a directory")
+        }
     }
 }

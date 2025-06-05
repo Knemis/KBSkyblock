@@ -1,4 +1,4 @@
-package com.iridium.iridiumcore.utils;
+package com.kbskyblock.core.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;

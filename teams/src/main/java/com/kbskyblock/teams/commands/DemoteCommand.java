@@ -1,11 +1,11 @@
-package com.iridium.iridiumteams.commands;
+package com.kbskyblock.teams.commands;
 
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.PermissionType;
-import com.iridium.iridiumteams.Rank;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.PermissionType;
+import com.kbskyblock.teams.Rank;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.core.utils.StringUtils;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -16,55 +16,55 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
-public class DemoteCommand<T extends Team, U extends IridiumUser<T>> extends Command<T, U> {
+public class DemoteCommand<T extends Team, U extends KBSkyblockUser<T>> extends Command<T, U> {
     public DemoteCommand(List<String> args, String description, String syntax, String permission, long cooldownInSeconds) {
         super(args, description, syntax, permission, cooldownInSeconds);
     }
 
     @Override
-    public boolean execute(U user, T team, String[] args, IridiumTeams<T, U> iridiumTeams) {
+    public boolean execute(U user, T team, String[] args, KBSkyblockTeams<T, U> teams) {
         Player player = user.getPlayer();
         if (args.length != 1) {
-            player.sendMessage(StringUtils.color(syntax.replace("%prefix%", iridiumTeams.getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(syntax.replace("%prefix%", teams.getConfiguration().prefix)));
             return false;
         }
 
         OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
-        U targetUser = iridiumTeams.getUserManager().getUser(targetPlayer);
+        U targetUser = teams.getUserManager().getUser(targetPlayer);
 
         if (targetUser.getTeamID() != team.getId()) {
-            player.sendMessage(StringUtils.color(iridiumTeams.getMessages().userNotInYourTeam
-                    .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+            player.sendMessage(StringUtils.color(teams.getMessages().userNotInYourTeam
+                    .replace("%prefix%", teams.getConfiguration().prefix)
             ));
             return false;
         }
 
         int nextRank = targetUser.getUserRank() - 1;
 
-        if (!DoesRankExist(nextRank, iridiumTeams) || IsHigherRank(targetUser, user) || !iridiumTeams.getTeamManager().getTeamPermission(team, user, PermissionType.DEMOTE)) {
-            player.sendMessage(StringUtils.color(iridiumTeams.getMessages().cannotDemoteUser
-                    .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+        if (!DoesRankExist(nextRank, teams) || IsHigherRank(targetUser, user) || !teams.getTeamManager().getTeamPermission(team, user, PermissionType.DEMOTE)) {
+            player.sendMessage(StringUtils.color(teams.getMessages().cannotDemoteUser
+                    .replace("%prefix%", teams.getConfiguration().prefix)
             ));
             return false;
         }
 
         targetUser.setUserRank(nextRank);
 
-        for (U member : iridiumTeams.getTeamManager().getTeamMembers(team)) {
+        for (U member : teams.getTeamManager().getTeamMembers(team)) {
             Player teamMember = Bukkit.getPlayer(member.getUuid());
             if (teamMember != null) {
                 if (teamMember.equals(player)) {
-                    teamMember.sendMessage(StringUtils.color(iridiumTeams.getMessages().demotedPlayer
+                    teamMember.sendMessage(StringUtils.color(teams.getMessages().demotedPlayer
                             .replace("%player%", targetUser.getName())
-                            .replace("%rank%", iridiumTeams.getUserRanks().get(nextRank).name)
-                            .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+                            .replace("%rank%", teams.getUserRanks().get(nextRank).name)
+                            .replace("%prefix%", teams.getConfiguration().prefix)
                     ));
                 } else {
-                    teamMember.sendMessage(StringUtils.color(iridiumTeams.getMessages().userDemotedPlayer
+                    teamMember.sendMessage(StringUtils.color(teams.getMessages().userDemotedPlayer
                             .replace("%demoter%", player.getName())
                             .replace("%player%", targetUser.getName())
-                            .replace("%rank%", iridiumTeams.getUserRanks().get(nextRank).name)
-                            .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+                            .replace("%rank%", teams.getUserRanks().get(nextRank).name)
+                            .replace("%prefix%", teams.getConfiguration().prefix)
                     ));
                 }
             }
@@ -73,13 +73,13 @@ public class DemoteCommand<T extends Team, U extends IridiumUser<T>> extends Com
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, String[] args, IridiumTeams<T, U> iridiumTeams) {
+    public List<String> onTabComplete(CommandSender commandSender, String[] args, KBSkyblockTeams<T, U> teams) {
         return Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
     }
 
-    private boolean DoesRankExist(int rank, IridiumTeams<T, U> iridiumTeams) {
+    private boolean DoesRankExist(int rank, KBSkyblockTeams<T, U> teams) {
         if (rank < 1) return false;
-        return iridiumTeams.getUserRanks().containsKey(rank);
+        return teams.getUserRanks().containsKey(rank);
     }
 
     private boolean IsHigherRank(U target, U user) {

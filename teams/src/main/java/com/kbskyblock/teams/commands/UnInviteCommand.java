@@ -1,10 +1,10 @@
-package com.iridium.iridiumteams.commands;
+package com.kbskyblock.teams.commands;
 
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
-import com.iridium.iridiumteams.database.TeamInvite;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.teams.database.TeamInvite;
+import com.kbskyblock.core.utils.StringUtils;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -15,28 +15,28 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
-public class UnInviteCommand<T extends Team, U extends IridiumUser<T>> extends Command<T, U> {
+public class UnInviteCommand<T extends Team, U extends KBSkyblockUser<T>> extends Command<T, U> {
     public UnInviteCommand(List<String> args, String description, String syntax, String permission, long cooldownInSeconds) {
         super(args, description, syntax, permission, cooldownInSeconds);
     }
 
     @Override
-    public boolean execute(U user, T team, String[] args, IridiumTeams<T, U> iridiumTeams) {
+    public boolean execute(U user, T team, String[] args, KBSkyblockTeams<T, U> teams) {
         Player player = user.getPlayer();
         if (args.length != 1) {
-            player.sendMessage(StringUtils.color(syntax.replace("%prefix%", iridiumTeams.getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(syntax.replace("%prefix%", teams.getConfiguration().prefix)));
             return false;
         }
-        U offlinePlayer = iridiumTeams.getUserManager().getUser(Bukkit.getServer().getOfflinePlayer(args[0]));
-        Optional<TeamInvite> teamInvite = iridiumTeams.getTeamManager().getTeamInvite(team, offlinePlayer);
+        U offlinePlayer = teams.getUserManager().getUser(Bukkit.getServer().getOfflinePlayer(args[0]));
+        Optional<TeamInvite> teamInvite = teams.getTeamManager().getTeamInvite(team, offlinePlayer);
         if (!teamInvite.isPresent()) {
-            player.sendMessage(StringUtils.color(iridiumTeams.getMessages().noActiveInvite.replace("%prefix%", iridiumTeams.getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(teams.getMessages().noActiveInvite.replace("%prefix%", teams.getConfiguration().prefix)));
             return false;
         }
 
-        iridiumTeams.getTeamManager().deleteTeamInvite(teamInvite.get());
-        player.sendMessage(StringUtils.color(iridiumTeams.getMessages().teamInviteRevoked
-                .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+        teams.getTeamManager().deleteTeamInvite(teamInvite.get());
+        player.sendMessage(StringUtils.color(teams.getMessages().teamInviteRevoked
+                .replace("%prefix%", teams.getConfiguration().prefix)
                 .replace("%player%", offlinePlayer.getName())
         ));
         
@@ -44,7 +44,7 @@ public class UnInviteCommand<T extends Team, U extends IridiumUser<T>> extends C
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, String[] args, IridiumTeams<T, U> iridiumTeams) {
+    public List<String> onTabComplete(CommandSender commandSender, String[] args, KBSkyblockTeams<T, U> teams) {
         return Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
     }
 

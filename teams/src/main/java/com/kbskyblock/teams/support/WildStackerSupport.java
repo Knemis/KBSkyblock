@@ -1,26 +1,26 @@
-package com.iridium.iridiumteams.support;
+package com.kbskyblock.teams.support;
 
 // import com.bgsoftware.wildstacker.api.WildStackerAPI; // Commented out
 // import com.bgsoftware.wildstacker.api.objects.StackedBarrel; // Commented out
 // import com.bgsoftware.wildstacker.api.objects.StackedSpawner; // Commented out
+
 import com.cryptomorin.xseries.XMaterial;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class WildStackerSupport<T extends Team, U extends IridiumUser<T>> implements StackerSupport<T>, SpawnerSupport<T> {
+public class WildStackerSupport<T extends Team, U extends KBSkyblockUser<T>> implements StackerSupport<T>, SpawnerSupport<T> {
 
-    private final IridiumTeams<T, U> iridiumTeams;
+    private final KBSkyblockTeams<T, U> teams;
 
-    public WildStackerSupport(IridiumTeams<T, U> iridiumTeams) {
-        this.iridiumTeams = iridiumTeams;
+    public WildStackerSupport(KBSkyblockTeams<T, U> teams) {
+        this.teams = teams;
     }
 
     @Override
@@ -99,7 +99,7 @@ public class WildStackerSupport<T extends Team, U extends IridiumUser<T>> implem
     public Map<XMaterial, Integer> getBlocksStacked(Chunk chunk, T team) {
         HashMap<XMaterial, Integer> hashMap = new HashMap<>();
         // WildStackerAPI.getWildStacker().getSystemManager().getStackedBarrels(chunk).forEach(stackedBarrel -> { // Commented out
-        //     if (!iridiumTeams.getTeamManager().isInTeam(team, stackedBarrel.getLocation())) return;
+        //     if (!teams.getTeamManager().isInTeam(team, stackedBarrel.getLocation())) return;
         //     XMaterial xMaterial = XMaterial.matchXMaterial(stackedBarrel.getType());
         //     hashMap.put(xMaterial, hashMap.getOrDefault(xMaterial, 0) + stackedBarrel.getStackAmount());
         // });
@@ -116,7 +116,7 @@ public class WildStackerSupport<T extends Team, U extends IridiumUser<T>> implem
     public int getExtraBlocks(T team, XMaterial material, List<Block> blocks) {
         int stackedBlocks = 0;
         // for (StackedBarrel stackedBarrel : getStackedBarrels(blocks)) { // Commented out
-        //     if (!iridiumTeams.getTeamManager().isInTeam(team, stackedBarrel.getLocation())) continue;
+        //     if (!teams.getTeamManager().isInTeam(team, stackedBarrel.getLocation())) continue;
         //     if (material != XMaterial.matchXMaterial(stackedBarrel.getType())) continue;
         //     stackedBlocks += stackedBarrel.getStackAmount();
         // }
@@ -127,7 +127,7 @@ public class WildStackerSupport<T extends Team, U extends IridiumUser<T>> implem
     public int getExtraSpawners(T team, EntityType entityType, List<CreatureSpawner> spawners) {
         int stackedSpawners = 0;
         // for (StackedSpawner stackedSpawner : getStackedSpawners(spawners)) { // Commented out
-        //     if (!iridiumTeams.getTeamManager().isInTeam(team, stackedSpawner.getLocation())) continue;
+        //     if (!teams.getTeamManager().isInTeam(team, stackedSpawner.getLocation())) continue;
         //     if (stackedSpawner.getSpawnedType() != entityType) continue;
         //     stackedSpawners += stackedSpawner.getStackAmount();
         // }

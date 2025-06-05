@@ -1,9 +1,9 @@
-package com.iridium.iridiumteams.configs;
+package com.kbskyblock.teams.configs;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumteams.bank.ExperienceBankItem;
-import com.iridium.iridiumteams.bank.MoneyBankItem;
+import com.kbskyblock.core.Item;
+import com.kbskyblock.teams.bank.ExperienceBankItem;
+import com.kbskyblock.teams.bank.MoneyBankItem;
 
 import java.util.Arrays;
 

@@ -1,20 +1,19 @@
-package com.iridium.iridiumteams.managers;
+package com.kbskyblock.teams.manager;
 
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
-import com.iridium.iridiumteams.support.*;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 
 import java.util.HashSet;
 
-public class SupportManager<T extends Team, U extends IridiumUser<T>> {
+public class SupportManager<T extends Team, U extends KBSkyblockUser<T>> {
 
-    private final IridiumTeams<T, U> iridiumTeams;
+    private final KBSkyblockTeams<T, U> teams;
 
-    public SupportManager(IridiumTeams<T, U> iridiumTeams) {
-        this.iridiumTeams = iridiumTeams;
+    public SupportManager(KBSkyblockTeams<T, U> teams) {
+        this.teams = teams;
     }
 
     @Getter
@@ -32,26 +31,26 @@ public class SupportManager<T extends Team, U extends IridiumUser<T>> {
 
     private void registerBlockStackerSupport() {
         if (supportedPluginEnabled("RoseStacker"))
-            stackerSupport.add(new RoseStackerSupport<>(iridiumTeams));
+            stackerSupport.add(new RoseStackerSupport<>(teams));
 
         if (supportedPluginEnabled("WildStacker"))
-            stackerSupport.add(new WildStackerSupport<>(iridiumTeams));
+            stackerSupport.add(new WildStackerSupport<>(teams));
 
         if(supportedPluginEnabled("ObsidianStacker"))
-            stackerSupport.add(new ObsidianStackerSupport<>(iridiumTeams));
+            stackerSupport.add(new ObsidianStackerSupport<>(teams));
     }
 
     private void registerSpawnerSupport() {
         if (supportedPluginEnabled("RoseStacker"))
-            spawnerSupport.add(new RoseStackerSupport<>(iridiumTeams));
+            spawnerSupport.add(new RoseStackerSupport<>(teams));
 
         if (supportedPluginEnabled("WildStacker"))
-            spawnerSupport.add(new WildStackerSupport<>(iridiumTeams));
+            spawnerSupport.add(new WildStackerSupport<>(teams));
     }
 
     private void registerSpawnSupport() {
         if (supportedPluginEnabled("EssentialsSpawn"))
-            spawnSupport.add(new EssentialsSpawnSupport<>(iridiumTeams));
+            spawnSupport.add(new EssentialsSpawnSupport<>(teams));
     }
 
     public void registerSupport() {

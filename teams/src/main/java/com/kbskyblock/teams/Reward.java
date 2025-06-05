@@ -1,7 +1,7 @@
-package com.iridium.iridiumteams;
+package com.kbskyblock.teams;
 
 import com.cryptomorin.xseries.XSound;
-import com.iridium.iridiumcore.Item;
+import com.kbskyblock.core.Item;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

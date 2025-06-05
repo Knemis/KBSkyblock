@@ -1,22 +1,22 @@
-package com.iridium.iridiumteams.placeholders;
+package com.kbskyblock.teams.placeholders;
 
-import com.iridium.iridiumcore.utils.Placeholder;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.core.utils.Placeholder;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class ClipPlaceholderAPI<T extends Team, U extends IridiumUser<T>> extends PlaceholderExpansion {
+public class ClipPlaceholderAPI<T extends Team, U extends KBSkyblockUser<T>> extends PlaceholderExpansion {
 
-    private final IridiumTeams<T, U> iridiumTeams;
+    private final KBSkyblockTeams<T, U> teams;
     private final Placeholders<T, U> placeholders;
 
-    public ClipPlaceholderAPI(IridiumTeams<T, U> iridiumTeams) {
-        this.iridiumTeams = iridiumTeams;
-        this.placeholders = new Placeholders<>(iridiumTeams);
+    public ClipPlaceholderAPI(KBSkyblockTeams<T, U> teams) {
+        this.teams = teams;
+        this.placeholders = new Placeholders<>(teams);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class ClipPlaceholderAPI<T extends Team, U extends IridiumUser<T>> extend
 
     @Override
     public String getIdentifier() {
-        return iridiumTeams.getName().toLowerCase();
+        return teams.getName().toLowerCase();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ClipPlaceholderAPI<T extends Team, U extends IridiumUser<T>> extend
 
     @Override
     public String getVersion() {
-        return iridiumTeams.getDescription().getVersion();
+        return teams.getDescription().getVersion();
     }
 
     @Override

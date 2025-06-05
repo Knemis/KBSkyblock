@@ -1,4 +1,4 @@
-package com.iridium.iridiumteams.enhancements;
+package com.kbskyblock.teams.enhancements;
 
 public enum EnhancementType {
     BOOSTER, UPGRADE

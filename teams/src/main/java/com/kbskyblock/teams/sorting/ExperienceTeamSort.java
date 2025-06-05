@@ -1,8 +1,8 @@
-package com.iridium.iridiumteams.sorting;
+package com.kbskyblock.teams.sorting;
 
-import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.core.Item;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.Team;
 import lombok.NoArgsConstructor;
 
 import java.util.Comparator;
@@ -18,8 +18,8 @@ public class ExperienceTeamSort<T extends Team> extends TeamSorting<T> {
     }
 
     @Override
-    public List<T> getSortedTeams(IridiumTeams<T, ?> iridiumTeams) {
-        return iridiumTeams.getTeamManager().getTeams().stream()
+    public List<T> getSortedTeams(KBSkyblockTeams<T, ?> teams) {
+        return teams.getTeamManager().getTeams().stream()
                 .sorted(Comparator.comparing(T::getExperience).reversed())
                 .collect(Collectors.toList());
     }

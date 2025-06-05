@@ -1,4 +1,4 @@
-package com.iridium.iridiumcore;
+package com.kbskyblock.core;
 
 import org.bukkit.entity.Entity;
 

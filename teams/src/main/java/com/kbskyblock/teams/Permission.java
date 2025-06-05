@@ -1,6 +1,6 @@
-package com.iridium.iridiumteams;
+package com.kbskyblock.teams;
 
-import com.iridium.iridiumcore.Item;
+import com.kbskyblock.core.Item;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

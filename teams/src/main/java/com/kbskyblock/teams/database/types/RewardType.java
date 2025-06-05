@@ -1,8 +1,8 @@
-package com.iridium.iridiumteams.database.types;
+package com.kbskyblock.teams.database.types;
 
-import com.iridium.iridiumcore.Persist;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.Reward;
+import com.kbskyblock.core.Persist;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.Reward;
 import com.j256.ormlite.field.FieldType;
 import com.j256.ormlite.field.SqlType;
 import com.j256.ormlite.field.types.StringType;
@@ -14,8 +14,8 @@ public class RewardType extends StringType {
     private static final RewardType instance = new RewardType();
     private static Persist persist;
 
-    public static RewardType getSingleton(IridiumTeams<?, ?> iridiumTeams) {
-        persist = new Persist(Persist.PersistType.JSON, iridiumTeams);
+    public static RewardType getSingleton(KBSkyblockTeams<?, ?> teams) {
+        persist = new Persist(Persist.PersistType.JSON, teams);
         return instance;
     }
 

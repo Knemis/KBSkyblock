@@ -1,8 +1,8 @@
-package com.iridium.iridiumteams.bank;
+package com.kbskyblock.teams.bank;
 
-import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.database.TeamBank;
+import com.kbskyblock.core.Item;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.TeamBank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,8 +18,8 @@ public abstract class BankItem {
     private double defaultAmount;
     private boolean enabled;
 
-    public abstract BankResponse withdraw(Player player, Number amount, TeamBank teamBank, IridiumTeams<?, ?> teams);
+    public abstract BankResponse withdraw(Player player, Number amount, TeamBank teamBank, KBSkyblockTeams<?, ?> teams);
 
-    public abstract BankResponse deposit(Player player, Number amount, TeamBank teamBank, IridiumTeams<?, ?> teams);
+    public abstract BankResponse deposit(Player player, Number amount, TeamBank teamBank, KBSkyblockTeams<?, ?> teams);
 
 }

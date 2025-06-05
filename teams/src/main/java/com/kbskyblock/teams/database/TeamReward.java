@@ -1,6 +1,6 @@
-package com.iridium.iridiumteams.database;
+package com.kbskyblock.teams.database;
 
-import com.iridium.iridiumteams.Reward;
+import com.kbskyblock.teams.Reward;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;

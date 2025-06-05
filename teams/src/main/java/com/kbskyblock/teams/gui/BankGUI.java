@@ -1,15 +1,15 @@
-package com.iridium.iridiumteams.gui;
+package com.kbskyblock.teams.gui;
 
-import com.iridium.iridiumcore.gui.BackGUI;
-import com.iridium.iridiumcore.utils.ItemStackUtils;
-import com.iridium.iridiumcore.utils.Placeholder;
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.bank.BankItem;
-import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
-import com.iridium.iridiumteams.database.TeamBank;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.bank.BankItem;
+import com.kbskyblock.teams.configs.inventories.NoItemGUI;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.teams.database.TeamBank;
+import com.kbskyblock.core.gui.BackGUI;
+import com.kbskyblock.core.utils.ItemStackUtils;
+import com.kbskyblock.core.utils.Placeholder;
+import com.kbskyblock.core.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -19,21 +19,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.Optional;
 
-public class BankGUI<T extends Team, U extends IridiumUser<T>> extends BackGUI {
+public class BankGUI<T extends Team, U extends KBSkyblockUser<T>> extends BackGUI {
 
     private final T team;
-    private final IridiumTeams<T, U> iridiumTeams;
+    private final KBSkyblockTeams<T, U> teams;
 
-    public BankGUI(T team, Player player, IridiumTeams<T, U> iridiumTeams) {
-        super(iridiumTeams.getInventories().bankGUI.background, player, iridiumTeams.getInventories().backButton);
+    public BankGUI(T team, Player player, KBSkyblockTeams<T, U> teams) {
+        super(teams.getInventories().bankGUI.background, player, teams.getInventories().backButton);
         this.team = team;
-        this.iridiumTeams = iridiumTeams;
+        this.teams = teams;
     }
 
     @NotNull
     @Override
     public Inventory getInventory() {
-        NoItemGUI noItemGUI = iridiumTeams.getInventories().bankGUI;
+        NoItemGUI noItemGUI = teams.getInventories().bankGUI;
         Inventory inventory = Bukkit.createInventory(this, noItemGUI.size, StringUtils.color(noItemGUI.title));
         addContent(inventory);
         return inventory;
@@ -43,10 +43,10 @@ public class BankGUI<T extends Team, U extends IridiumUser<T>> extends BackGUI {
     public void addContent(Inventory inventory) {
         super.addContent(inventory);
 
-        for (BankItem bankItem : iridiumTeams.getBankItemList()) {
-            TeamBank teamBank = iridiumTeams.getTeamManager().getTeamBank(team, bankItem.getName());
+        for (BankItem bankItem : teams.getBankItemList()) {
+            TeamBank teamBank = teams.getTeamManager().getTeamBank(team, bankItem.getName());
             inventory.setItem(bankItem.getItem().slot, ItemStackUtils.makeItem(bankItem.getItem(), Collections.singletonList(
-                    new Placeholder("amount", iridiumTeams.getConfiguration().numberFormatter.format(teamBank.getNumber()))
+                    new Placeholder("amount", teams.getConfiguration().numberFormatter.format(teamBank.getNumber()))
             )));
         }
     }
@@ -55,21 +55,21 @@ public class BankGUI<T extends Team, U extends IridiumUser<T>> extends BackGUI {
     public void onInventoryClick(InventoryClickEvent event) {
         super.onInventoryClick(event);
 
-        Optional<BankItem> bankItem = iridiumTeams.getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
+        Optional<BankItem> bankItem = teams.getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
         if (!bankItem.isPresent()) return;
 
         switch (event.getClick()) {
             case LEFT:
-                iridiumTeams.getCommandManager().executeCommand(event.getWhoClicked(), iridiumTeams.getCommands().withdrawCommand, new String[]{bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
+                teams.getCommandManager().executeCommand(event.getWhoClicked(), teams.getCommands().withdrawCommand, new String[]{bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
                 break;
             case RIGHT:
-                iridiumTeams.getCommandManager().executeCommand(event.getWhoClicked(), iridiumTeams.getCommands().depositCommand, new String[]{bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
+                teams.getCommandManager().executeCommand(event.getWhoClicked(), teams.getCommands().depositCommand, new String[]{bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
                 break;
             case SHIFT_LEFT:
-                iridiumTeams.getCommandManager().executeCommand(event.getWhoClicked(), iridiumTeams.getCommands().withdrawCommand, new String[]{bankItem.get().getName(), String.valueOf(Double.MAX_VALUE)});
+                teams.getCommandManager().executeCommand(event.getWhoClicked(), teams.getCommands().withdrawCommand, new String[]{bankItem.get().getName(), String.valueOf(Double.MAX_VALUE)});
                 break;
             case SHIFT_RIGHT:
-                iridiumTeams.getCommandManager().executeCommand(event.getWhoClicked(), iridiumTeams.getCommands().depositCommand, new String[]{bankItem.get().getName(), String.valueOf(Double.MAX_VALUE)});
+                teams.getCommandManager().executeCommand(event.getWhoClicked(), teams.getCommands().depositCommand, new String[]{bankItem.get().getName(), String.valueOf(Double.MAX_VALUE)});
                 break;
         }
 

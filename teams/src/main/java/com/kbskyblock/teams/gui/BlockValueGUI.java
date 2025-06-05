@@ -1,14 +1,14 @@
-package com.iridium.iridiumteams.gui;
+package com.kbskyblock.teams.gui;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.iridium.iridiumcore.gui.PagedGUI;
-import com.iridium.iridiumcore.utils.ItemStackUtils;
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.configs.BlockValues;
-import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.configs.BlockValues;
+import com.kbskyblock.teams.configs.inventories.NoItemGUI;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.core.gui.PagedGUI;
+import com.kbskyblock.core.utils.ItemStackUtils;
+import com.kbskyblock.core.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -21,23 +21,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class BlockValueGUI<T extends Team, U extends IridiumUser<T>> extends PagedGUI<BlockValues.ValuableBlock> {
+public class BlockValueGUI<T extends Team, U extends KBSkyblockUser<T>> extends PagedGUI<BlockValues.ValuableBlock> {
 
     private final T team;
-    private final IridiumTeams<T, U> iridiumTeams;
+    private final KBSkyblockTeams<T, U> teams;
 
-    public BlockValueGUI(T team, Player player, IridiumTeams<T, U> iridiumTeams) {
+    public BlockValueGUI(T team, Player player, KBSkyblockTeams<T, U> teams) {
         super(
                 1,
-                iridiumTeams.getInventories().blockValueGUI.size,
-                iridiumTeams.getInventories().blockValueGUI.background,
-                iridiumTeams.getInventories().previousPage,
-                iridiumTeams.getInventories().nextPage,
+                teams.getInventories().blockValueGUI.size,
+                teams.getInventories().blockValueGUI.background,
+                teams.getInventories().previousPage,
+                teams.getInventories().nextPage,
                 player,
-                iridiumTeams.getInventories().backButton
+                teams.getInventories().backButton
         );
         this.team = team;
-        this.iridiumTeams = iridiumTeams;
+        this.teams = teams;
     }
 
     @NotNull
@@ -46,7 +46,7 @@ public class BlockValueGUI<T extends Team, U extends IridiumUser<T>> extends Pag
         int maxPages = getPageObjects().size() / (getSize() - 9);
         if (getPageObjects().size() % (getSize() - 9) > 0) maxPages++;
 
-        NoItemGUI noItemGUI = iridiumTeams.getInventories().blockValueGUI;
+        NoItemGUI noItemGUI = teams.getInventories().blockValueGUI;
         Inventory inventory = Bukkit.createInventory(this, getSize(), StringUtils.color(noItemGUI.title
                 .replace("%page%", String.valueOf(getPage()))
                 .replace("%max_pages%", String.valueOf(maxPages))
@@ -59,15 +59,15 @@ public class BlockValueGUI<T extends Team, U extends IridiumUser<T>> extends Pag
     public void addContent(Inventory inventory) {
         super.addContent(inventory);
 
-        for (Map.Entry<XMaterial, BlockValues.ValuableBlock> entry : iridiumTeams.getBlockValues().blockValues.entrySet().stream().filter(entry -> entry.getValue().page == getPage()).collect(Collectors.toList())) {
+        for (Map.Entry<XMaterial, BlockValues.ValuableBlock> entry : teams.getBlockValues().blockValues.entrySet().stream().filter(entry -> entry.getValue().page == getPage()).collect(Collectors.toList())) {
 
             List<String> lore = new ArrayList<>();
-            lore.add(iridiumTeams.getBlockValues().valueLore
+            lore.add(teams.getBlockValues().valueLore
                     .replace("%block_value%", String.valueOf(entry.getValue().value))
             );
-            lore.add(iridiumTeams.getBlockValues().teamValueLore
-                    .replace("%total_blocks%", String.valueOf(iridiumTeams.getTeamManager().getTeamBlock(team, entry.getKey()).getAmount()))
-                    .replace("%total_block_value%", String.valueOf(iridiumTeams.getTeamManager().getTeamBlock(team, entry.getKey()).getAmount() * entry.getValue().value))
+            lore.add(teams.getBlockValues().teamValueLore
+                    .replace("%total_blocks%", String.valueOf(teams.getTeamManager().getTeamBlock(team, entry.getKey()).getAmount()))
+                    .replace("%total_block_value%", String.valueOf(teams.getTeamManager().getTeamBlock(team, entry.getKey()).getAmount() * entry.getValue().value))
             );
 
             inventory.setItem(entry.getValue().slot, ItemStackUtils.makeItem(entry.getKey(), 1, entry.getValue().name, lore));
@@ -76,7 +76,7 @@ public class BlockValueGUI<T extends Team, U extends IridiumUser<T>> extends Pag
 
     @Override
     public Collection<BlockValues.ValuableBlock> getPageObjects() {
-        return iridiumTeams.getBlockValues().blockValues.values();
+        return teams.getBlockValues().blockValues.values();
     }
 
     @Override

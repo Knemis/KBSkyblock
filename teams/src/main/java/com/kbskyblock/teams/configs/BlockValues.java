@@ -1,4 +1,4 @@
-package com.iridium.iridiumteams.configs;
+package com.kbskyblock.teams.configs;
 
 
 import com.cryptomorin.xseries.XMaterial;

@@ -1,14 +1,14 @@
-package com.iridium.iridiumteams.listeners;
+package com.kbskyblock.teams.listeners;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.PermissionType;
-import com.iridium.iridiumteams.SettingType;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
-import com.iridium.iridiumteams.database.TeamSetting;
-import com.iridium.iridiumteams.database.TeamSpawners;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.PermissionType;
+import com.kbskyblock.teams.SettingType;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.teams.database.TeamSetting;
+import com.kbskyblock.teams.database.TeamSpawners;
+import com.kbskyblock.core.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
@@ -28,40 +28,40 @@ import java.util.Arrays;
 import java.util.List;
 
     @AllArgsConstructor
-    public class PlayerInteractListener<T extends Team, U extends IridiumUser<T>> implements Listener {
-        private final IridiumTeams<T, U> iridiumTeams;
+    public class PlayerInteractListener<T extends Team, U extends KBSkyblockUser<T>> implements Listener {
+        private final KBSkyblockTeams<T, U> teams;
         private final List<XMaterial> redstoneTriggers = Arrays.asList(XMaterial.LEVER, XMaterial.STRING, XMaterial.TRIPWIRE, XMaterial.TRIPWIRE_HOOK, XMaterial.SCULK_SENSOR, XMaterial.CALIBRATED_SCULK_SENSOR);
 
         @EventHandler(ignoreCancelled = true)
         public void onPlayerInteract(PlayerInteractEvent event) {
             if (event.getClickedBlock() == null) return;
             Player player = event.getPlayer();
-            U user = iridiumTeams.getUserManager().getUser(player);
+            U user = teams.getUserManager().getUser(player);
 
-            iridiumTeams.getTeamManager().getTeamViaPlayerLocation(player, event.getClickedBlock().getLocation()).ifPresent(team -> {
-                if (!iridiumTeams.getTeamManager().getTeamPermission(team, user, PermissionType.OPEN_CONTAINERS.getPermissionKey()) && event.getClickedBlock().getState() instanceof InventoryHolder) {
-                    player.sendMessage(StringUtils.color(iridiumTeams.getMessages().cannotOpenContainers
-                            .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+            teams.getTeamManager().getTeamViaPlayerLocation(player, event.getClickedBlock().getLocation()).ifPresent(team -> {
+                if (!teams.getTeamManager().getTeamPermission(team, user, PermissionType.OPEN_CONTAINERS.getPermissionKey()) && event.getClickedBlock().getState() instanceof InventoryHolder) {
+                    player.sendMessage(StringUtils.color(teams.getMessages().cannotOpenContainers
+                            .replace("%prefix%", teams.getConfiguration().prefix)
                     ));
                     event.setCancelled(true);
                 }
 
-                if (!iridiumTeams.getTeamManager().getTeamPermission(team, user, PermissionType.DOORS.getPermissionKey()) && isDoor(XMaterial.matchXMaterial(event.getClickedBlock().getType()))) {
-                    player.sendMessage(StringUtils.color(iridiumTeams.getMessages().cannotOpenDoors
-                            .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+                if (!teams.getTeamManager().getTeamPermission(team, user, PermissionType.DOORS.getPermissionKey()) && isDoor(XMaterial.matchXMaterial(event.getClickedBlock().getType()))) {
+                    player.sendMessage(StringUtils.color(teams.getMessages().cannotOpenDoors
+                            .replace("%prefix%", teams.getConfiguration().prefix)
                     ));
                     event.setCancelled(true);
                 }
 
-                if (!iridiumTeams.getTeamManager().getTeamPermission(team, user, PermissionType.REDSTONE.getPermissionKey()) && isRedstoneTrigger(XMaterial.matchXMaterial(event.getClickedBlock().getType()))) {
-                    player.sendMessage(StringUtils.color(iridiumTeams.getMessages().cannotTriggerRedstone
-                            .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+                if (!teams.getTeamManager().getTeamPermission(team, user, PermissionType.REDSTONE.getPermissionKey()) && isRedstoneTrigger(XMaterial.matchXMaterial(event.getClickedBlock().getType()))) {
+                    player.sendMessage(StringUtils.color(teams.getMessages().cannotTriggerRedstone
+                            .replace("%prefix%", teams.getConfiguration().prefix)
                     ));
                     event.setCancelled(true);
                 }
 
                 if (event.getAction() == Action.PHYSICAL) {
-                    TeamSetting cropTrampleTeamSetting = iridiumTeams.getTeamManager().getTeamSetting(team, SettingType.CROP_TRAMPLE.getSettingKey());
+                    TeamSetting cropTrampleTeamSetting = teams.getTeamManager().getTeamSetting(team, SettingType.CROP_TRAMPLE.getSettingKey());
                     if (cropTrampleTeamSetting == null) return;
                     if (cropTrampleTeamSetting.getValue().equalsIgnoreCase("Disabled") && (XMaterial.matchXMaterial(event.getClickedBlock().getType()) == XMaterial.FARMLAND)) {
                         event.setCancelled(true);
@@ -72,9 +72,9 @@ import java.util.List;
                         && (isSpawnEgg(event.getPlayer().getInventory().getItemInMainHand().getItemMeta())
                         || isSpawnEgg(event.getPlayer().getInventory().getItemInOffHand().getItemMeta()))) {
 
-                    if (!iridiumTeams.getTeamManager().getTeamPermission(team, user, PermissionType.SPAWNERS.getPermissionKey())) {
-                        player.sendMessage(StringUtils.color(iridiumTeams.getMessages().cannotBreakSpawners
-                                .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+                    if (!teams.getTeamManager().getTeamPermission(team, user, PermissionType.SPAWNERS.getPermissionKey())) {
+                        player.sendMessage(StringUtils.color(teams.getMessages().cannotBreakSpawners
+                                .replace("%prefix%", teams.getConfiguration().prefix)
                         ));
                         event.setCancelled(true);
                     } else {
@@ -90,11 +90,11 @@ import java.util.List;
 
                         TeamSpawners teamSpawners;
                         if(creatureSpawner.getSpawnedType() != null) {
-                            teamSpawners = iridiumTeams.getTeamManager().getTeamSpawners(team, creatureSpawner.getSpawnedType());
+                            teamSpawners = teams.getTeamManager().getTeamSpawners(team, creatureSpawner.getSpawnedType());
                             teamSpawners.setAmount(Math.max(0, teamSpawners.getAmount() - 1));
                         }
 
-                        teamSpawners = iridiumTeams.getTeamManager().getTeamSpawners(team, newEntityType);
+                        teamSpawners = teams.getTeamManager().getTeamSpawners(team, newEntityType);
                         teamSpawners.setAmount(teamSpawners.getAmount() + 1);
                     }
                 }
@@ -104,12 +104,12 @@ import java.util.List;
         @EventHandler
         public void onSignChangeEvent(SignChangeEvent event) {
             Player player = event.getPlayer();
-            U user = iridiumTeams.getUserManager().getUser(player);
+            U user = teams.getUserManager().getUser(player);
 
-            iridiumTeams.getTeamManager().getTeamViaPlayerLocation(player, event.getBlock().getLocation()).ifPresent(team -> {
-                if (!iridiumTeams.getTeamManager().getTeamPermission(team, user, PermissionType.INTERACT.getPermissionKey())) {
-                    player.sendMessage(StringUtils.color(iridiumTeams.getMessages().cannotInteract
-                            .replace("%prefix%", iridiumTeams.getConfiguration().prefix)));
+            teams.getTeamManager().getTeamViaPlayerLocation(player, event.getBlock().getLocation()).ifPresent(team -> {
+                if (!teams.getTeamManager().getTeamPermission(team, user, PermissionType.INTERACT.getPermissionKey())) {
+                    player.sendMessage(StringUtils.color(teams.getMessages().cannotInteract
+                            .replace("%prefix%", teams.getConfiguration().prefix)));
                     event.setCancelled(true);
                 }
             });
@@ -118,12 +118,12 @@ import java.util.List;
         @EventHandler
         public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
             Player player = event.getPlayer();
-            U user = iridiumTeams.getUserManager().getUser(player);
+            U user = teams.getUserManager().getUser(player);
 
-            iridiumTeams.getTeamManager().getTeamViaPlayerLocation(player, event.getRightClicked().getLocation()).ifPresent(team -> {
-                if (!iridiumTeams.getTeamManager().getTeamPermission(team, user, PermissionType.INTERACT.getPermissionKey())) {
-                    player.sendMessage(StringUtils.color(iridiumTeams.getMessages().cannotInteract
-                            .replace("%prefix%", iridiumTeams.getConfiguration().prefix)));
+            teams.getTeamManager().getTeamViaPlayerLocation(player, event.getRightClicked().getLocation()).ifPresent(team -> {
+                if (!teams.getTeamManager().getTeamPermission(team, user, PermissionType.INTERACT.getPermissionKey())) {
+                    player.sendMessage(StringUtils.color(teams.getMessages().cannotInteract
+                            .replace("%prefix%", teams.getConfiguration().prefix)));
                     event.setCancelled(true);
                 }
             });
@@ -134,7 +134,7 @@ import java.util.List;
                 return EntityType.valueOf(itemStack.getType().name().toUpperCase().replace("_SPAWN_EGG", ""));
             }
             catch(NullPointerException e) {
-                iridiumTeams.getLogger().warning(e.getMessage());
+                teams.getLogger().warning(e.getMessage());
                 return EntityType.UNKNOWN;
             }
         }

@@ -1,4 +1,4 @@
-package com.iridium.iridiumteams;
+package com.kbskyblock.teams;
 
 import lombok.Getter;
 

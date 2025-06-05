@@ -1,7 +1,7 @@
-package com.iridium.iridiumteams.enhancements;
+package com.kbskyblock.teams.enhancements;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.iridium.iridiumcore.utils.Placeholder;
+import com.kbskyblock.core.utils.Placeholder;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

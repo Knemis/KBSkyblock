@@ -1,9 +1,9 @@
-package com.iridium.iridiumteams.listeners;
+package com.kbskyblock.teams.listeners;
 
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.core.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -15,8 +15,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import java.util.Optional;
 
 @AllArgsConstructor
-public class PlayerMoveListener<T extends Team, U extends IridiumUser<T>> implements Listener {
-    private final IridiumTeams<T, U> iridiumTeams;
+public class PlayerMoveListener<T extends Team, U extends KBSkyblockUser<T>> implements Listener {
+    private final KBSkyblockTeams<T, U> teams;
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
@@ -31,40 +31,40 @@ public class PlayerMoveListener<T extends Team, U extends IridiumUser<T>> implem
 
         Player player = event.getPlayer();
 
-        Optional<T> fromTeam = iridiumTeams.getTeamManager().getTeamViaPlayerLocation(event.getPlayer(), from);
-        Optional<T> toTeam = iridiumTeams.getTeamManager().getTeamViaPlayerLocation(event.getPlayer(), to);
+        Optional<T> fromTeam = teams.getTeamManager().getTeamViaPlayerLocation(event.getPlayer(), from);
+        Optional<T> toTeam = teams.getTeamManager().getTeamViaPlayerLocation(event.getPlayer(), to);
 
         if (fromTeam.isPresent()) {
-            iridiumTeams.getTeamManager().sendTeamTime(player);
-            iridiumTeams.getTeamManager().sendTeamWeather(player);
+            teams.getTeamManager().sendTeamTime(player);
+            teams.getTeamManager().sendTeamWeather(player);
         }
 
-        if (toTeam.isPresent() && !iridiumTeams.getTeamManager().canVisit(player, toTeam.get())) {
+        if (toTeam.isPresent() && !teams.getTeamManager().canVisit(player, toTeam.get())) {
             event.setCancelled(true);
-            player.sendMessage(StringUtils.color(iridiumTeams.getMessages().cannotVisit
-                    .replace("%prefix%", iridiumTeams.getConfiguration().prefix))
+            player.sendMessage(StringUtils.color(teams.getMessages().cannotVisit
+                    .replace("%prefix%", teams.getConfiguration().prefix))
             );
             return;
         }
 
         // we should only be checking if the player is flying if the flight enhancement is enabled (this is a global config setting)
         // we're not an anti-cheat, we don't care otherwise
-        U user = iridiumTeams.getUserManager().getUser(player);
-        if (iridiumTeams.getEnhancements().flightEnhancement.enabled && user.isFlying()) {
-            if (!user.canFly(iridiumTeams) && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+        U user = teams.getUserManager().getUser(player);
+        if (teams.getEnhancements().flightEnhancement.enabled && user.isFlying()) {
+            if (!user.canFly(teams) && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
                 user.setFlying(false);
                 player.setFlying(false);
                 player.setAllowFlight(false);
 
-                player.sendMessage(StringUtils.color(iridiumTeams.getMessages().flightDisabled
-                        .replace("%prefix%", iridiumTeams.getConfiguration().prefix))
+                player.sendMessage(StringUtils.color(teams.getMessages().flightDisabled
+                        .replace("%prefix%", teams.getConfiguration().prefix))
                 );
             }
         }
 
         if (!toTeam.isPresent()) return;
         if (!toTeam.map(T::getId).orElse(-99999).equals(fromTeam.map(T::getId).orElse(-99999))) {
-            iridiumTeams.getTeamManager().sendTeamTitle(player, toTeam.get());
+            teams.getTeamManager().sendTeamTitle(player, toTeam.get());
         }
     }
 }

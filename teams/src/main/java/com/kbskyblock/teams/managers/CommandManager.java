@@ -1,11 +1,11 @@
-package com.iridium.iridiumteams.managers;
+package com.kbskyblock.teams.manager;
 
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumcore.utils.TimeUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.commands.Command;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.core.utils.StringUtils;
+import com.kbskyblock.core.utils.TimeUtils;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.commands.Command;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
 import lombok.Getter;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,7 +17,7 @@ import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class CommandManager<T extends Team, U extends IridiumUser<T>> implements CommandExecutor, TabCompleter {
+public abstract class CommandManager<T extends Team, U extends KBSkyblockUser<T>> implements CommandExecutor, TabCompleter {
 
     @Getter
     private final List<Command<T, U>> commands = new ArrayList<>();
@@ -25,65 +25,65 @@ public abstract class CommandManager<T extends Team, U extends IridiumUser<T>> i
     private final String command;
     @Getter
     private final String color;
-    private final IridiumTeams<T, U> iridiumTeams;
+    private final KBSkyblockTeams<T, U> teams;
 
-    public CommandManager(IridiumTeams<T, U> iridiumTeams, String color, String command) {
-        this.iridiumTeams = iridiumTeams;
+    public CommandManager(KBSkyblockTeams<T, U> teams, String color, String command) {
+        this.teams = teams;
         this.command = command;
         this.color = color;
-        iridiumTeams.getCommand(command).setExecutor(this);
-        iridiumTeams.getCommand(command).setTabCompleter(this);
+        teams.getCommand(command).setExecutor(this);
+        teams.getCommand(command).setTabCompleter(this);
         registerCommands();
     }
 
     public void registerCommands() {
-        registerCommand(iridiumTeams.getCommands().aboutCommand);
-        registerCommand(iridiumTeams.getCommands().createCommand);
-        registerCommand(iridiumTeams.getCommands().membersCommand);
-        registerCommand(iridiumTeams.getCommands().permissionsCommand);
-        registerCommand(iridiumTeams.getCommands().setPermissionCommand);
-        registerCommand(iridiumTeams.getCommands().promoteCommand);
-        registerCommand(iridiumTeams.getCommands().demoteCommand);
-        registerCommand(iridiumTeams.getCommands().helpCommand);
-        registerCommand(iridiumTeams.getCommands().reloadCommand);
-        registerCommand(iridiumTeams.getCommands().inviteCommand);
-        registerCommand(iridiumTeams.getCommands().unInviteCommand);
-        registerCommand(iridiumTeams.getCommands().invitesCommand);
-        registerCommand(iridiumTeams.getCommands().trustCommand);
-        registerCommand(iridiumTeams.getCommands().unTrustCommand);
-        registerCommand(iridiumTeams.getCommands().trustsCommand);
-        registerCommand(iridiumTeams.getCommands().kickCommand);
-        registerCommand(iridiumTeams.getCommands().leaveCommand);
-        registerCommand(iridiumTeams.getCommands().deleteCommand);
-        registerCommand(iridiumTeams.getCommands().infoCommand);
-        registerCommand(iridiumTeams.getCommands().descriptionCommand);
-        registerCommand(iridiumTeams.getCommands().renameCommand);
-        registerCommand(iridiumTeams.getCommands().setHomeCommand);
-        registerCommand(iridiumTeams.getCommands().homeCommand);
-        registerCommand(iridiumTeams.getCommands().bypassCommand);
-        registerCommand(iridiumTeams.getCommands().transferCommand);
-        registerCommand(iridiumTeams.getCommands().joinCommand);
-        registerCommand(iridiumTeams.getCommands().bankCommand);
-        registerCommand(iridiumTeams.getCommands().depositCommand);
-        registerCommand(iridiumTeams.getCommands().withdrawCommand);
-        registerCommand(iridiumTeams.getCommands().chatCommand);
-        registerCommand(iridiumTeams.getCommands().boostersCommand);
-        registerCommand(iridiumTeams.getCommands().upgradesCommand);
-        registerCommand(iridiumTeams.getCommands().flyCommand);
-        registerCommand(iridiumTeams.getCommands().topCommand);
-        registerCommand(iridiumTeams.getCommands().recalculateCommand);
-        registerCommand(iridiumTeams.getCommands().warpsCommand);
-        registerCommand(iridiumTeams.getCommands().warpCommand);
-        registerCommand(iridiumTeams.getCommands().setWarpCommand);
-        registerCommand(iridiumTeams.getCommands().deleteWarpCommand);
-        registerCommand(iridiumTeams.getCommands().editWarpCommand);
-        registerCommand(iridiumTeams.getCommands().missionsCommand);
-        registerCommand(iridiumTeams.getCommands().rewardsCommand);
-        registerCommand(iridiumTeams.getCommands().experienceCommand);
-        registerCommand(iridiumTeams.getCommands().shopCommand);
-        registerCommand(iridiumTeams.getCommands().settingsCommand);
-        registerCommand(iridiumTeams.getCommands().blockValueCommand);
-        registerCommand(iridiumTeams.getCommands().levelCommand);
+        registerCommand(teams.getCommands().aboutCommand);
+        registerCommand(teams.getCommands().createCommand);
+        registerCommand(teams.getCommands().membersCommand);
+        registerCommand(teams.getCommands().permissionsCommand);
+        registerCommand(teams.getCommands().setPermissionCommand);
+        registerCommand(teams.getCommands().promoteCommand);
+        registerCommand(teams.getCommands().demoteCommand);
+        registerCommand(teams.getCommands().helpCommand);
+        registerCommand(teams.getCommands().reloadCommand);
+        registerCommand(teams.getCommands().inviteCommand);
+        registerCommand(teams.getCommands().unInviteCommand);
+        registerCommand(teams.getCommands().invitesCommand);
+        registerCommand(teams.getCommands().trustCommand);
+        registerCommand(teams.getCommands().unTrustCommand);
+        registerCommand(teams.getCommands().trustsCommand);
+        registerCommand(teams.getCommands().kickCommand);
+        registerCommand(teams.getCommands().leaveCommand);
+        registerCommand(teams.getCommands().deleteCommand);
+        registerCommand(teams.getCommands().infoCommand);
+        registerCommand(teams.getCommands().descriptionCommand);
+        registerCommand(teams.getCommands().renameCommand);
+        registerCommand(teams.getCommands().setHomeCommand);
+        registerCommand(teams.getCommands().homeCommand);
+        registerCommand(teams.getCommands().bypassCommand);
+        registerCommand(teams.getCommands().transferCommand);
+        registerCommand(teams.getCommands().joinCommand);
+        registerCommand(teams.getCommands().bankCommand);
+        registerCommand(teams.getCommands().depositCommand);
+        registerCommand(teams.getCommands().withdrawCommand);
+        registerCommand(teams.getCommands().chatCommand);
+        registerCommand(teams.getCommands().boostersCommand);
+        registerCommand(teams.getCommands().upgradesCommand);
+        registerCommand(teams.getCommands().flyCommand);
+        registerCommand(teams.getCommands().topCommand);
+        registerCommand(teams.getCommands().recalculateCommand);
+        registerCommand(teams.getCommands().warpsCommand);
+        registerCommand(teams.getCommands().warpCommand);
+        registerCommand(teams.getCommands().setWarpCommand);
+        registerCommand(teams.getCommands().deleteWarpCommand);
+        registerCommand(teams.getCommands().editWarpCommand);
+        registerCommand(teams.getCommands().missionsCommand);
+        registerCommand(teams.getCommands().rewardsCommand);
+        registerCommand(teams.getCommands().experienceCommand);
+        registerCommand(teams.getCommands().shopCommand);
+        registerCommand(teams.getCommands().settingsCommand);
+        registerCommand(teams.getCommands().blockValueCommand);
+        registerCommand(teams.getCommands().levelCommand);
     }
 
     public void registerCommand(Command<T, U> command) {
@@ -107,31 +107,31 @@ public abstract class CommandManager<T extends Team, U extends IridiumUser<T>> i
         }
 
         // Unknown command message
-        commandSender.sendMessage(StringUtils.color(iridiumTeams.getMessages().unknownCommand
-                .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+        commandSender.sendMessage(StringUtils.color(teams.getMessages().unknownCommand
+                .replace("%prefix%", teams.getConfiguration().prefix)
         ));
         return false;
     }
 
     public boolean executeCommand(CommandSender commandSender, Command<T, U> command, String[] args) {
-        if (!command.hasPermission(commandSender, iridiumTeams)) {
-            commandSender.sendMessage(StringUtils.color(iridiumTeams.getMessages().noPermission
-                    .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+        if (!command.hasPermission(commandSender, teams)) {
+            commandSender.sendMessage(StringUtils.color(teams.getMessages().noPermission
+                    .replace("%prefix%", teams.getConfiguration().prefix)
             ));
             return false;
         }
 
-        if (command.isOnCooldown(commandSender, iridiumTeams)) {
+        if (command.isOnCooldown(commandSender, teams)) {
             Duration remainingTime = command.getCooldownProvider().getRemainingTime(commandSender);
-            String formattedTime = TimeUtils.formatDuration(iridiumTeams.getMessages().activeCooldown, remainingTime);
+            String formattedTime = TimeUtils.formatDuration(teams.getMessages().activeCooldown, remainingTime);
 
             commandSender.sendMessage(StringUtils.color(formattedTime
-                    .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+                    .replace("%prefix%", teams.getConfiguration().prefix)
             ));
             return false;
         }
 
-        if (command.execute(commandSender, args, iridiumTeams)) {
+        if (command.execute(commandSender, args, teams)) {
             command.getCooldownProvider().applyCooldown(commandSender);
         }
         return true;
@@ -146,7 +146,7 @@ public abstract class CommandManager<T extends Team, U extends IridiumUser<T>> i
                 if(command.isSuperSecretCommand()) continue;
                 for (String alias : command.aliases) {
                     if (!alias.toLowerCase().startsWith(args[0].toLowerCase())) continue;
-                    if (command.hasPermission(commandSender, iridiumTeams)) {
+                    if (command.hasPermission(commandSender, teams)) {
                         result.add(alias);
                     }
                 }
@@ -157,8 +157,8 @@ public abstract class CommandManager<T extends Team, U extends IridiumUser<T>> i
         for (Command<T, U> command : commands) {
             if(command.isSuperSecretCommand()) continue;
             if (!command.aliases.contains(args[0].toLowerCase())) continue;
-            if (command.hasPermission(commandSender, iridiumTeams)) {
-                return command.onTabComplete(commandSender, Arrays.copyOfRange(args, 1, args.length), iridiumTeams);
+            if (command.hasPermission(commandSender, teams)) {
+                return command.onTabComplete(commandSender, Arrays.copyOfRange(args, 1, args.length), teams);
             }
         }
 

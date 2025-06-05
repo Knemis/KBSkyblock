@@ -1,6 +1,6 @@
-package com.iridium.iridiumteams.enhancements;
+package com.kbskyblock.teams.enhancements;
 
-import com.iridium.iridiumcore.utils.Placeholder;
+import com.kbskyblock.core.utils.Placeholder;
 import lombok.NoArgsConstructor;
 
 import java.util.Arrays;

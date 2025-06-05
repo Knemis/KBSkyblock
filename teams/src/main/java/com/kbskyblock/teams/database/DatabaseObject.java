@@ -1,4 +1,4 @@
-package com.iridium.iridiumteams.database;
+package com.kbskyblock.teams.database;
 
 import lombok.Getter;
 import lombok.Setter;

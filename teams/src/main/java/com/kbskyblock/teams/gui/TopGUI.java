@@ -1,13 +1,13 @@
-package com.iridium.iridiumteams.gui;
+package com.kbskyblock.teams.gui;
 
-import com.iridium.iridiumcore.gui.BackGUI;
-import com.iridium.iridiumcore.utils.ItemStackUtils;
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
-import com.iridium.iridiumteams.sorting.TeamSorting;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.configs.inventories.NoItemGUI;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.teams.sorting.TeamSorting;
+import com.kbskyblock.core.gui.BackGUI;
+import com.kbskyblock.core.utils.ItemStackUtils;
+import com.kbskyblock.core.utils.StringUtils;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,24 +21,24 @@ import java.util.List;
 
 @Getter
 @Setter
-public class TopGUI<T extends Team, U extends IridiumUser<T>> extends BackGUI {
+public class TopGUI<T extends Team, U extends KBSkyblockUser<T>> extends BackGUI {
 
     private TeamSorting<T> sortingType;
     private int page = 1;
     @Setter(AccessLevel.NONE)
     @Getter(AccessLevel.NONE)
-    private final IridiumTeams<T, U> iridiumTeams;
+    private final KBSkyblockTeams<T, U> teams;
 
-    public TopGUI(TeamSorting<T> sortingType, Player player, IridiumTeams<T, U> iridiumTeams) {
-        super(iridiumTeams.getInventories().topGUI.background, player, iridiumTeams.getInventories().backButton);
+    public TopGUI(TeamSorting<T> sortingType, Player player, KBSkyblockTeams<T, U> teams) {
+        super(teams.getInventories().topGUI.background, player, teams.getInventories().backButton);
         this.sortingType = sortingType;
-        this.iridiumTeams = iridiumTeams;
+        this.teams = teams;
     }
 
     @NotNull
     @Override
     public Inventory getInventory() {
-        NoItemGUI noItemGUI = iridiumTeams.getInventories().topGUI;
+        NoItemGUI noItemGUI = teams.getInventories().topGUI;
         Inventory inventory = Bukkit.createInventory(this, noItemGUI.size, StringUtils.color(noItemGUI.title));
         addContent(inventory);
         return inventory;
@@ -48,43 +48,43 @@ public class TopGUI<T extends Team, U extends IridiumUser<T>> extends BackGUI {
     public void addContent(Inventory inventory) {
         super.addContent(inventory);
 
-        List<T> teams = iridiumTeams.getTeamManager().getTeams(sortingType, true);
+        List<T> teams = teams.getTeamManager().getTeams(sortingType, true);
 
-        for (int rank : iridiumTeams.getConfiguration().teamTopSlots.keySet()) {
-            int slot = iridiumTeams.getConfiguration().teamTopSlots.get(rank);
-            int actualRank = rank + (iridiumTeams.getConfiguration().teamTopSlots.size() * (page - 1));
+        for (int rank : teams.getConfiguration().teamTopSlots.keySet()) {
+            int slot = teams.getConfiguration().teamTopSlots.get(rank);
+            int actualRank = rank + (teams.getConfiguration().teamTopSlots.size() * (page - 1));
             if (teams.size() >= actualRank) {
                 T team = teams.get(actualRank - 1);
-                inventory.setItem(slot, ItemStackUtils.makeItem(iridiumTeams.getInventories().topGUI.item, iridiumTeams.getTeamsPlaceholderBuilder().getPlaceholders(team)));
+                inventory.setItem(slot, ItemStackUtils.makeItem(teams.getInventories().topGUI.item, teams.getTeamsPlaceholderBuilder().getPlaceholders(team)));
             } else {
-                inventory.setItem(slot, ItemStackUtils.makeItem(iridiumTeams.getInventories().topGUI.filler));
+                inventory.setItem(slot, ItemStackUtils.makeItem(teams.getInventories().topGUI.filler));
             }
         }
 
-        for (TeamSorting<T> sortingType : iridiumTeams.getSortingTypes()) {
+        for (TeamSorting<T> sortingType : teams.getSortingTypes()) {
             inventory.setItem(sortingType.getItem().slot, ItemStackUtils.makeItem(sortingType.getItem()));
         }
 
-        inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(iridiumTeams.getInventories().nextPage));
-        inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(iridiumTeams.getInventories().previousPage));
+        inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(teams.getInventories().nextPage));
+        inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(teams.getInventories().previousPage));
     }
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         super.onInventoryClick(event);
 
-        if (event.getSlot() == iridiumTeams.getInventories().topGUI.size - 7 && page > 1) {
+        if (event.getSlot() == teams.getInventories().topGUI.size - 7 && page > 1) {
             page--;
             event.getWhoClicked().openInventory(getInventory());
             return;
         }
 
-        if (event.getSlot() == iridiumTeams.getInventories().topGUI.size - 3 && iridiumTeams.getTeamManager().getTeams().size() >= 1 + (iridiumTeams.getConfiguration().teamTopSlots.size() * page)) {
+        if (event.getSlot() == teams.getInventories().topGUI.size - 3 && teams.getTeamManager().getTeams().size() >= 1 + (teams.getConfiguration().teamTopSlots.size() * page)) {
             page++;
             event.getWhoClicked().openInventory(getInventory());
         }
 
-        iridiumTeams.getSortingTypes().stream().filter(sorting -> sorting.item.slot == event.getSlot()).findFirst().ifPresent(sortingType -> {
+        teams.getSortingTypes().stream().filter(sorting -> sorting.item.slot == event.getSlot()).findFirst().ifPresent(sortingType -> {
             this.sortingType = sortingType;
             addContent(event.getInventory());
         });

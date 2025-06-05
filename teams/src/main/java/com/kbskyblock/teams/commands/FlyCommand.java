@@ -1,9 +1,9 @@
-package com.iridium.iridiumteams.commands;
+package com.kbskyblock.teams.commands;
 
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.core.utils.StringUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.bukkit.command.CommandSender;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @NoArgsConstructor
-public class FlyCommand<T extends Team, U extends IridiumUser<T>> extends Command<T, U> {
+public class FlyCommand<T extends Team, U extends KBSkyblockUser<T>> extends Command<T, U> {
 
     @Getter
     String flyAnywherePermission;
@@ -24,21 +24,21 @@ public class FlyCommand<T extends Team, U extends IridiumUser<T>> extends Comman
     }
 
     @Override
-    public boolean execute(U user, T team, String[] args, IridiumTeams<T, U> iridiumTeams) {
+    public boolean execute(U user, T team, String[] args, KBSkyblockTeams<T, U> teams) {
         Player player = user.getPlayer();
 
         boolean flight = !user.isFlying();
         if (args.length == 1) {
             if (!args[0].equalsIgnoreCase("enable") && !args[0].equalsIgnoreCase("disable") && !args[0].equalsIgnoreCase("on") && !args[0].equalsIgnoreCase("off")) {
-                player.sendMessage(StringUtils.color(syntax.replace("%prefix%", iridiumTeams.getConfiguration().prefix)));
+                player.sendMessage(StringUtils.color(syntax.replace("%prefix%", teams.getConfiguration().prefix)));
                 return false;
             }
 
             flight = args[0].equalsIgnoreCase("enable") || args[0].equalsIgnoreCase("on");
         }
 
-        if (!canFly(player, iridiumTeams)) {
-            player.sendMessage(StringUtils.color(iridiumTeams.getMessages().flightNotActive.replace("%prefix%", iridiumTeams.getConfiguration().prefix)));
+        if (!canFly(player, teams)) {
+            player.sendMessage(StringUtils.color(teams.getMessages().flightNotActive.replace("%prefix%", teams.getConfiguration().prefix)));
             return false;
         }
 
@@ -47,25 +47,25 @@ public class FlyCommand<T extends Team, U extends IridiumUser<T>> extends Comman
         player.setFlying(flight);
 
         if (flight) {
-            player.sendMessage(StringUtils.color(iridiumTeams.getMessages().flightEnabled.replace("%prefix%", iridiumTeams.getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(teams.getMessages().flightEnabled.replace("%prefix%", teams.getConfiguration().prefix)));
         } else {
-            player.sendMessage(StringUtils.color(iridiumTeams.getMessages().flightDisabled.replace("%prefix%", iridiumTeams.getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(teams.getMessages().flightDisabled.replace("%prefix%", teams.getConfiguration().prefix)));
         }
         return true;
     }
 
     @Override
-    public boolean hasPermission(CommandSender commandSender, IridiumTeams<T, U> iridiumTeams) {
+    public boolean hasPermission(CommandSender commandSender, KBSkyblockTeams<T, U> teams) {
         return true;
     }
 
-    public boolean canFly(Player player, IridiumTeams<T, U> iridiumTeams) {
-        U user = iridiumTeams.getUserManager().getUser(player);
-        return user.canFly(iridiumTeams);
+    public boolean canFly(Player player, KBSkyblockTeams<T, U> teams) {
+        U user = teams.getUserManager().getUser(player);
+        return user.canFly(teams);
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, String[] args, IridiumTeams<T, U> iridiumTeams) {
+    public List<String> onTabComplete(CommandSender commandSender, String[] args, KBSkyblockTeams<T, U> teams) {
         return Arrays.asList("enable", "disable", "on", "off");
     }
 }

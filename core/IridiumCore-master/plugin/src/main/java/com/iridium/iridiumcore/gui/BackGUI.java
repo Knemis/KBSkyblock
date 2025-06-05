@@ -1,10 +1,10 @@
-package com.iridium.iridiumcore.gui;
+package com.kbskyblock.core.gui;
 
-import com.iridium.iridiumcore.Background;
-import com.iridium.iridiumcore.IridiumCore;
-import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumcore.utils.InventoryUtils;
-import com.iridium.iridiumcore.utils.ItemStackUtils;
+import com.kbskyblock.core.Background;
+import com.kbskyblock.core.Core;
+import com.kbskyblock.core.Item;
+import com.kbskyblock.core.utils.InventoryUtils;
+import com.kbskyblock.core.utils.ItemStackUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -22,7 +22,7 @@ public abstract class BackGUI implements GUI {
         if (player == null) {
             this.previousInventory = null;
         } else {
-            Inventory previousInventory = IridiumCore.getInstance().getIridiumInventory().getTopInventory(player);
+            Inventory previousInventory = Core.getInstance().getCoreInventory().getTopInventory(player);
             this.previousInventory = previousInventory.getType() == InventoryType.CHEST ? previousInventory : null;
         }
     }

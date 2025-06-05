@@ -1,10 +1,10 @@
-package com.iridium.iridiumteams.configs;
+package com.kbskyblock.teams.configs;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumteams.database.Team;
-import com.iridium.iridiumteams.sorting.ExperienceTeamSort;
-import com.iridium.iridiumteams.sorting.ValueTeamSort;
+import com.kbskyblock.core.Item;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.teams.sorting.ExperienceTeamSort;
+import com.kbskyblock.teams.sorting.ValueTeamSort;
 
 import java.util.Collections;
 

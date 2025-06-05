@@ -1,9 +1,9 @@
-package com.iridium.iridiumteams.listeners;
+package com.kbskyblock.teams.listeners;
 
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.core.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -14,8 +14,8 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import java.util.Optional;
 
 @AllArgsConstructor
-public class PlayerTeleportListener<T extends Team, U extends IridiumUser<T>> implements Listener {
-    private final IridiumTeams<T, U> iridiumTeams;
+public class PlayerTeleportListener<T extends Team, U extends KBSkyblockUser<T>> implements Listener {
+    private final KBSkyblockTeams<T, U> teams;
 
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
@@ -23,28 +23,28 @@ public class PlayerTeleportListener<T extends Team, U extends IridiumUser<T>> im
         Location to = event.getTo();
         Location from = event.getFrom();
         if (to == null) return; // This is possible apparently?
-        U user = iridiumTeams.getUserManager().getUser(player);
-        Optional<T> toTeam = iridiumTeams.getTeamManager().getTeamViaPlayerLocation(player, to);
-        Optional<T> fromTeam = iridiumTeams.getTeamManager().getTeamViaPlayerLocation(player, from);
-        if (user.isFlying() && (to.getBlockX() != from.getBlockX() || to.getBlockZ() != from.getBlockZ()) && !user.canFly(iridiumTeams)) {
+        U user = teams.getUserManager().getUser(player);
+        Optional<T> toTeam = teams.getTeamManager().getTeamViaPlayerLocation(player, to);
+        Optional<T> fromTeam = teams.getTeamManager().getTeamViaPlayerLocation(player, from);
+        if (user.isFlying() && (to.getBlockX() != from.getBlockX() || to.getBlockZ() != from.getBlockZ()) && !user.canFly(teams)) {
             user.setFlying(false);
             player.setAllowFlight(false);
             player.setFlying(false);
-            player.sendMessage(StringUtils.color(iridiumTeams.getMessages().flightDisabled
-                    .replace("%prefix%", iridiumTeams.getConfiguration().prefix))
+            player.sendMessage(StringUtils.color(teams.getMessages().flightDisabled
+                    .replace("%prefix%", teams.getConfiguration().prefix))
             );
         }
         if (!toTeam.isPresent()) return;
-        if (!iridiumTeams.getTeamManager().canVisit(player, toTeam.get())) {
+        if (!teams.getTeamManager().canVisit(player, toTeam.get())) {
             event.setCancelled(true);
-            player.sendMessage(StringUtils.color(iridiumTeams.getMessages().cannotVisit
-                    .replace("%prefix%", iridiumTeams.getConfiguration().prefix))
+            player.sendMessage(StringUtils.color(teams.getMessages().cannotVisit
+                    .replace("%prefix%", teams.getConfiguration().prefix))
             );
             return;
         }
 
         if (!toTeam.map(T::getId).orElse(-1).equals(fromTeam.map(T::getId).orElse(-1))) {
-            iridiumTeams.getTeamManager().sendTeamTitle(player, toTeam.get());
+            teams.getTeamManager().sendTeamTitle(player, toTeam.get());
         }
     }
 

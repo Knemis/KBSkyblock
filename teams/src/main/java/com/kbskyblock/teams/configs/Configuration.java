@@ -1,12 +1,12 @@
-package com.iridium.iridiumteams.configs;
+package com.kbskyblock.teams.configs;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
 import com.google.common.collect.ImmutableMap;
-import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumcore.utils.NumberFormatter;
-import com.iridium.iridiumteams.Reward;
-import com.iridium.iridiumteams.UserRank;
+import com.kbskyblock.core.Item;
+import com.kbskyblock.core.utils.NumberFormatter;
+import com.kbskyblock.teams.Reward;
+import com.kbskyblock.teams.UserRank;
 
 import java.util.*;
 
@@ -54,7 +54,7 @@ public class Configuration {
     public List<String> whitelistedWorlds;
 
     public Configuration() {
-        this("&c", "Team", "IridiumTeams");
+        this("&c", "Team", "KBSkyblockTeams");
     }
 
     public Configuration(String color, String team, String pluginName) {

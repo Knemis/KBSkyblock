@@ -4,9 +4,9 @@ plugins {
     id("io.github.goooler.shadow") version "8.1.8"
 }
 
-group = "com.iridium"
+group = "com.kbskyblock"
 version = "2.0.9"
-description = "IridiumCore"
+description = "Core"
 
 allprojects {
     apply(plugin = "java")
@@ -60,8 +60,8 @@ tasks {
 
 publishing {
     publications.create<MavenPublication>("maven") {
-        groupId = "com.iridium"
-        artifactId = "IridiumCore"
+        groupId = "com.kbskyblock"
+        artifactId = "Core"
         version = version
         artifact(tasks["shadowJar"])
     }

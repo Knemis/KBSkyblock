@@ -1,10 +1,10 @@
-package com.iridium.iridiumteams.gui;
+package com.kbskyblock.teams.gui;
 
-import com.iridium.iridiumcore.gui.GUI;
-import com.iridium.iridiumcore.utils.InventoryUtils;
-import com.iridium.iridiumcore.utils.ItemStackUtils;
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.configs.inventories.InventoryConfig;
+import com.kbskyblock.core.gui.GUI;
+import com.kbskyblock.core.utils.InventoryUtils;
+import com.kbskyblock.core.utils.ItemStackUtils;
+import com.kbskyblock.core.utils.StringUtils;
+import com.kbskyblock.teams.configs.inventories.InventoryConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;

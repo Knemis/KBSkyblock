@@ -1,12 +1,12 @@
-package com.iridium.iridiumteams.gui;
+package com.kbskyblock.teams.gui;
 
-import com.iridium.iridiumcore.gui.BackGUI;
-import com.iridium.iridiumcore.utils.ItemStackUtils;
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.UserRank;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.UserRank;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.core.gui.BackGUI;
+import com.kbskyblock.core.utils.ItemStackUtils;
+import com.kbskyblock.core.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -15,21 +15,21 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class RanksGUI<T extends Team, U extends IridiumUser<T>> extends BackGUI {
+public class RanksGUI<T extends Team, U extends KBSkyblockUser<T>> extends BackGUI {
 
-    private final IridiumTeams<T, U> iridiumTeams;
+    private final KBSkyblockTeams<T, U> teams;
     private final T team;
 
-    public RanksGUI(T team, Player player, IridiumTeams<T, U> iridiumTeams) {
-        super(iridiumTeams.getInventories().ranksGUI.background, player, iridiumTeams.getInventories().backButton);
+    public RanksGUI(T team, Player player, KBSkyblockTeams<T, U> teams) {
+        super(teams.getInventories().ranksGUI.background, player, teams.getInventories().backButton);
         this.team = team;
-        this.iridiumTeams = iridiumTeams;
+        this.teams = teams;
     }
 
     @NotNull
     @Override
     public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, iridiumTeams.getInventories().ranksGUI.size, StringUtils.color(iridiumTeams.getInventories().ranksGUI.title));
+        Inventory inventory = Bukkit.createInventory(this, teams.getInventories().ranksGUI.size, StringUtils.color(teams.getInventories().ranksGUI.title));
         addContent(inventory);
         return inventory;
     }
@@ -38,7 +38,7 @@ public class RanksGUI<T extends Team, U extends IridiumUser<T>> extends BackGUI 
     public void addContent(Inventory inventory) {
         super.addContent(inventory);
 
-        for (UserRank userRank : iridiumTeams.getUserRanks().values()) {
+        for (UserRank userRank : teams.getUserRanks().values()) {
             inventory.setItem(userRank.item.slot, ItemStackUtils.makeItem(userRank.item));
         }
     }
@@ -47,9 +47,9 @@ public class RanksGUI<T extends Team, U extends IridiumUser<T>> extends BackGUI 
     public void onInventoryClick(InventoryClickEvent event) {
         super.onInventoryClick(event);
 
-        for (Map.Entry<Integer, UserRank> userRank : iridiumTeams.getUserRanks().entrySet()) {
+        for (Map.Entry<Integer, UserRank> userRank : teams.getUserRanks().entrySet()) {
             if (event.getSlot() != userRank.getValue().item.slot) continue;
-            event.getWhoClicked().openInventory(new PermissionsGUI<>(team, userRank.getKey(), (Player) event.getWhoClicked(), iridiumTeams).getInventory());
+            event.getWhoClicked().openInventory(new PermissionsGUI<>(team, userRank.getKey(), (Player) event.getWhoClicked(), teams).getInventory());
             return;
         }
     }

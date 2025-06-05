@@ -1,10 +1,10 @@
-package com.iridium.iridiumteams.commands;
+package com.kbskyblock.teams.commands;
 
-import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.PermissionType;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.PermissionType;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
+import com.kbskyblock.core.utils.StringUtils;
 import lombok.NoArgsConstructor;
 import org.bukkit.entity.Player;
 
@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @NoArgsConstructor
-public class DescriptionCommand<T extends Team, U extends IridiumUser<T>> extends Command<T, U> {
+public class DescriptionCommand<T extends Team, U extends KBSkyblockUser<T>> extends Command<T, U> {
     public String adminPermission;
 
     public DescriptionCommand(List<String> args, String description, String syntax, String permission, long cooldownInSeconds, String adminPermission) {
@@ -23,44 +23,44 @@ public class DescriptionCommand<T extends Team, U extends IridiumUser<T>> extend
     }
 
     @Override
-    public boolean execute(U user, String[] args, IridiumTeams<T, U> iridiumTeams) {
+    public boolean execute(U user, String[] args, KBSkyblockTeams<T, U> teams) {
         Player player = user.getPlayer();
         if (args.length == 0) {
-            player.sendMessage(StringUtils.color(syntax.replace("%prefix%", iridiumTeams.getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(syntax.replace("%prefix%", teams.getConfiguration().prefix)));
             return false;
         }
-        Optional<T> team = iridiumTeams.getTeamManager().getTeamViaNameOrPlayer(args[0]);
+        Optional<T> team = teams.getTeamManager().getTeamViaNameOrPlayer(args[0]);
         if (team.isPresent() && player.hasPermission(adminPermission)) {
             String description = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-            changeDescription(team.get(), description, player, iridiumTeams);
-            player.sendMessage(StringUtils.color(iridiumTeams.getMessages().changedPlayerDescription
-                    .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+            changeDescription(team.get(), description, player, teams);
+            player.sendMessage(StringUtils.color(teams.getMessages().changedPlayerDescription
+                    .replace("%prefix%", teams.getConfiguration().prefix)
                     .replace("%name%", team.get().getName())
                     .replace("%description%", description)
             ));
             return true;
         }
-        return super.execute(user, args, iridiumTeams);
+        return super.execute(user, args, teams);
     }
 
     @Override
-    public boolean execute(U user, T team, String[] arguments, IridiumTeams<T, U> iridiumTeams) {
+    public boolean execute(U user, T team, String[] arguments, KBSkyblockTeams<T, U> teams) {
         Player player = user.getPlayer();
-        if (!iridiumTeams.getTeamManager().getTeamPermission(team, user, PermissionType.DESCRIPTION)) {
-            player.sendMessage(StringUtils.color(iridiumTeams.getMessages().cannotChangeDescription
-                    .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+        if (!teams.getTeamManager().getTeamPermission(team, user, PermissionType.DESCRIPTION)) {
+            player.sendMessage(StringUtils.color(teams.getMessages().cannotChangeDescription
+                    .replace("%prefix%", teams.getConfiguration().prefix)
             ));
             return false;
         }
-        changeDescription(team, String.join(" ", arguments), player, iridiumTeams);
+        changeDescription(team, String.join(" ", arguments), player, teams);
         return true;
     }
 
-    private void changeDescription(T team, String description, Player player, IridiumTeams<T, U> iridiumTeams) {
+    private void changeDescription(T team, String description, Player player, KBSkyblockTeams<T, U> teams) {
         team.setDescription(description);
-        iridiumTeams.getTeamManager().getTeamMembers(team).stream().map(U::getPlayer).filter(Objects::nonNull).forEach(member ->
-                member.sendMessage(StringUtils.color(iridiumTeams.getMessages().descriptionChanged
-                        .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
+        teams.getTeamManager().getTeamMembers(team).stream().map(U::getPlayer).filter(Objects::nonNull).forEach(member ->
+                member.sendMessage(StringUtils.color(teams.getMessages().descriptionChanged
+                        .replace("%prefix%", teams.getConfiguration().prefix)
                         .replace("%player%", player.getName())
                         .replace("%description%", description)
                 ))

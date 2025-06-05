@@ -1,8 +1,8 @@
-package com.iridium.iridiumteams.missions;
+package com.kbskyblock.teams.missions;
 
 import com.cryptomorin.xseries.XSound;
-import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumteams.Reward;
+import com.kbskyblock.core.Item;
+import com.kbskyblock.teams.Reward;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

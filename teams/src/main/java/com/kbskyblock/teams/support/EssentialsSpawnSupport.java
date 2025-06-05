@@ -1,23 +1,22 @@
-package com.iridium.iridiumteams.support;
+package com.kbskyblock.teams.support;
 
 import com.earth2me.essentials.Essentials;
-// import com.earth2me.essentials.spawn.EssentialsSpawn; // Commented out due to compilation error
-import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
+import com.kbskyblock.teams.KBSkyblockTeams;
+import com.kbskyblock.teams.database.KBSkyblockUser;
+import com.kbskyblock.teams.database.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class EssentialsSpawnSupport<T extends Team, U extends IridiumUser<T>> implements SpawnSupport<T> {
+public class EssentialsSpawnSupport<T extends Team, U extends KBSkyblockUser<T>> implements SpawnSupport<T> {
 
-    private final IridiumTeams<T, U> iridiumTeams;
+    private final KBSkyblockTeams<T, U> teams;
 
     // EssentialsSpawn essentialsSpawn = (EssentialsSpawn) Bukkit.getPluginManager().getPlugin("EssentialsSpawn"); // Commented out
     Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
 
-    public EssentialsSpawnSupport(IridiumTeams<T, U> iridiumTeams) {
-        this.iridiumTeams = iridiumTeams;
+    public EssentialsSpawnSupport(KBSkyblockTeams<T, U> teams) {
+        this.teams = teams;
     }
 
     @Override
