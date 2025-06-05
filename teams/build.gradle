@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
 }
 
 repositories {
@@ -37,22 +36,6 @@ dependencies {
     compileOnly('net.essentialsx:EssentialsX:2.20.1') {
         exclude group: 'org.spigotmc', module: 'spigot-api'
     }
-}
-
-shadowJar {
-    archiveClassifier.set('')
-    
-    // Relocations
-    relocate 'com.j256.ormlite', 'com.kbskyblock.libs.ormlite'
-    relocate 'org.bstats', 'com.kbskyblock.libs.bstats'
-    relocate 'com.cryptomorin.xseries', 'com.kbskyblock.libs.xseries'
-    relocate 'org.apache.commons', 'com.kbskyblock.libs.commons'
-    relocate 'io.papermc.paperlib', 'com.kbskyblock.libs.paperlib'
-    
-    // Configure merging
-    mergeServiceFiles()
-    exclude 'META-INF/*.DSA'
-    exclude 'META-INF/*.SF'
 }
 
 processResources {

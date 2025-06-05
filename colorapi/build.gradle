@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow'
 }
 
 dependencies {
@@ -9,15 +8,6 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1'
     implementation 'org.apache.commons:commons-lang3:3.14.0'  // Eklenen satır
     compileOnly 'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT'
-}
-
-shadowJar {
-    archiveClassifier.set('')
-    relocate 'com.fasterxml.jackson', 'com.kbskyblock.libs.jackson'
-    relocate 'org.apache.commons', 'com.kbskyblock.libs.commons'  // Eklenen satır
-    mergeServiceFiles()
-    exclude 'META-INF/*.DSA'
-    exclude 'META-INF/*.SF'
 }
 
 tasks.build.dependsOn tasks.shadowJar

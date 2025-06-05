@@ -4,14 +4,14 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
+        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.8'
     }
 }
 
 plugins {
     id 'java'
     id 'java-library'
-    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+    id 'com.github.johnrengelman.shadow' version '8.1.8' apply false
 }
 
 allprojects {
@@ -131,6 +131,11 @@ subprojects {
             relocate 'org.yaml.snakeyaml', 'com.kbskyblock.core.libs.snakeyaml'
             relocate 'io.papermc.paperlib', 'com.kbskyblock.core.libs.paperlib'
             relocate 'org.apache.commons', 'com.kbskyblock.core.libs.commons'
+        }
+
+        if (project.path == ':colorapi') {
+            relocate 'com.fasterxml.jackson', 'com.kbskyblock.libs.jackson'
+            relocate 'org.apache.commons', 'com.kbskyblock.libs.commons'
         }
 
         if (project.path == ':teams') {
