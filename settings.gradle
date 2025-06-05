@@ -29,6 +29,7 @@ if (multiversionDir.exists()) {
     }
 }
 
+
 // Add submodules for each main module
 ['teams', 'colorapi'].each { module ->
     def moduleDir = file(module)
