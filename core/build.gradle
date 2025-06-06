@@ -1,79 +1,15 @@
-//
-// Top of file
+// --- YENİ core/build.gradle ---
+dependencies {
+    // Bu satır, "Cannot resolve symbol 'ItemStack'" hatanı düzeltecek.
+    compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT'
 
-buildscript {
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
-    }
-    dependencies {
-    }
-}
+    // Core modülü, colorapi modülünü kullanıyor.
+    implementation project(':colorapi')
 
-plugins {
-    id 'java'
-}
-
-allprojects {
-    apply plugin: 'java'
-
-    group = 'com.kbskyblock'
-    version = '1.0.0-SNAPSHOT'
-
-    repositories {
-        mavenCentral()
-        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
-        maven { url 'https://hub.spigotmc.org/nexus/content/groups/public/' }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        maven { url 'https://repo.codemc.org/repository/maven-public/' }
-        maven { url 'https://jitpack.io' }
-        maven { url 'https://repo.papermc.io/repository/maven-public/' }
-    }
-
-    dependencies {
-        if (project.name != 'common' && project.name != 'default' && project.name != 'v1_10_R1') {
-            implementation 'com.github.cryptomorin:XSeries:9.8.0'
-            compileOnly 'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT'
-            compileOnly('com.github.MilkBowl:VaultAPI:1.7') {
-                exclude group: 'org.bukkit', module: 'bukkit'
-            }
-        } else {
-            implementation 'com.github.cryptomorin:XSeries:9.8.0'
-            compileOnly('com.github.MilkBowl:VaultAPI:1.7') {
-                exclude group: 'org.bukkit', module: 'bukkit'
-            }
-        }
-    }
-}
-
-subprojects {
-
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(21)
-        }
-    }
-
-    tasks.withType(JavaCompile).configureEach {
-        options.encoding = 'UTF-8'
-        options.release = 21
-    }
-}
-
-task runServer(type: JavaExec) {
-    dependsOn ':plugin:shadowJar'
-    group = "Execution"
-    description = "Runs the server with your plugin"
-    classpath = files('run/server.jar')
-    mainClass = "org.bukkit.craftbukkit.Main"
-    args 'nogui'
-    workingDir = file('run')
-
-    doFirst {
-        mkdir 'run/plugins'
-        copy {
-            from project(':plugin').tasks.shadowJar.archiveFile
-            into 'run/plugins'
-        }
-    }
+    // Core modülünün ihtiyaç duyduğu kütüphaneler
+    implementation 'de.tr7zw:item-nbt-api:2.12.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
+    implementation 'org.yaml:snakeyaml:2.2'
+    implementation 'io.papermc:paperlib:1.0.8'
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
 }

@@ -3,7 +3,6 @@ package com.kbskyblock.core.utils;
 import com.cryptomorin.xseries.XMaterial;
 import com.kbskyblock.core.Background;
 import com.kbskyblock.core.Item;
-import com.kbskyblock.core.Placeholder;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 

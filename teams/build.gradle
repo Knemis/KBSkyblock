@@ -1,48 +1,22 @@
-plugins {
-    id 'java'
-}
-
-repositories {
-    mavenCentral()
-    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-    maven { url 'https://repo.codemc.org/repository/maven-public/' }
-    maven { url 'https://jitpack.io' }
-    maven { url 'https://repo.papermc.io/repository/maven-public/' }
-    maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
-    maven { url 'https://repo.essentialsx.net/releases/' }
-}
-
+// --- YENİ teams/build.gradle ---
 dependencies {
-    // Core dependencies
+    // Gerekli API'ler
+    compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT'
+    compileOnly 'me.clip:placeholderapi:2.11.6'
+    compileOnly('net.essentialsx:EssentialsX:2.20.1') {
+        exclude group: 'org.spigotmc', module: 'spigot-api'
+    }
+
+    // Proje içi modüller
     implementation project(':core')
     implementation project(':core:multiversion:common')
-    project(':core:multiversion').subprojects.each { implementation it }
-    
-    // Development
-    compileOnly 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
-    
-    // Libraries
+    // project(':core:multiversion').subprojects.each { implementation it } // Bu satır tehlikeli olabilir, ihtiyaç halinde aç
+
+    // Harici kütüphaneler
     implementation 'com.github.cryptomorin:XSeries:9.8.0'
     implementation 'com.j256.ormlite:ormlite-core:6.1'
     implementation 'com.j256.ormlite:ormlite-jdbc:6.1'
     implementation 'org.bstats:bstats-bukkit:3.0.2'
     implementation 'commons-lang:commons-lang:2.6'
     implementation 'io.papermc:paperlib:1.0.8'
-    
-    // Plugin Dependencies
-    compileOnly 'me.clip:placeholderapi:2.11.6'
-    compileOnly('net.essentialsx:EssentialsX:2.20.1') {
-        exclude group: 'org.spigotmc', module: 'spigot-api'
-    }
-}
-
-processResources {
-    filesMatching('plugin.yml') {
-        expand(
-            version: project.version,
-            name: project.name.toLowerCase()
-        )
-    }
 }
