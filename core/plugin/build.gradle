@@ -1,54 +1,74 @@
-// --- YENİ core:plugin/build.gradle ---
 plugins {
-    id 'java' // Bu bir kütüphane değil, son uygulama olduğu için 'java' kullanıyoruz.
-    id 'com.github.johnrengelman.shadow' // Shadow plugin'i SADECE BURADA uyguluyoruz.
+    id 'java'
+    // Shadow plugin'i SADECE burada uygula
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
+// Java sürümünü root'tan alıyor, istersen burada override edebilirsin.
+// java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
 dependencies {
-    // Gölgeleyeceğimiz (JAR'a dahil edeceğimiz) tüm proje modülleri
-    implementation project(':core')
-    implementation project(':teams')
+    // Projenin diğer tüm modüllerini implementation ile ekle
+    implementation project(':core:api')
+    implementation project(':core:common')
     implementation project(':colorapi')
-    implementation project(':core:multiversion:common')
-    project(':core:multiversion').subprojects.each {
-        if (it.name != 'common') { // common zaten yukarıda eklendi
-            implementation(it)
+    implementation project(':teams')
+
+    // Multiversion modüllerinin hepsini dahil et
+    project(':core:multiversion').subprojects.each { sub ->
+        if (sub.name != 'common') { // 'common' zaten dolaylı olarak geliyor
+            implementation sub
         }
     }
 
-    // Gölgeleyeceğimiz tüm harici kütüphaneler
-    // Bu kütüphaneler diğer modüllerde 'implementation' olarak tanımlanmış olsa bile,
-    // shadow'un onları bulabilmesi için burada da belirtmek en güvenlisidir.
-    implementation 'de.tr7zw:item-nbt-api:2.12.2'
-    implementation 'com.j256.ormlite:ormlite-core:6.1'
-    implementation 'com.j256.ormlite:ormlite-jdbc:6.1'
-    implementation 'org.bstats:bstats-bukkit:3.0.2'
+    // Bu modülün kendi direkt bağımlılıkları
+    implementation 'de.tr7zw:item-nbt-api:2.12.2' // NBT API'nin güncel sürümünü kontrol et
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.17.1'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1'
+    implementation 'org.yaml:snakeyaml:2.2'
+
+    // Spigot API (compileOnly olmalı, çünkü sunucuda zaten var)
+    compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT' // Desteklenen en son sürüm
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
 
 shadowJar {
-    archiveClassifier.set('') // JAR isminin sonunda '-all' gibi ekler olmasın.
-    mergeServiceFiles()
+    archiveClassifier.set('') // 'all' veya 'shadow' gibi ek isimler olmadan jar oluşturur.
+    mergeServiceFiles() // META-INF/services altındaki dosyaları birleştirir (örn: bStats)
 
-    // Diğer pluginlerle çakışmayı önlemek için kütüphanelerin paketlerini yeniden adlandır.
+    // Tüm bağımlılıkları yeniden paketle (relocate)
+    // Bu, diğer pluginlerle çakışmayı önler.
+
+    // core modülünün bağımlılıkları
     relocate 'de.tr7zw', 'com.kbskyblock.libs.tr7zw'
+    relocate 'com.fasterxml.jackson', 'com.kbskyblock.libs.jackson'
+    relocate 'org.yaml.snakeyaml', 'com.kbskyblock.libs.snakeyaml'
+
+    // colorapi modülünün bağımlılıkları (burada da relocate edilmeli)
+    // colorapi'nin kendisi de relocate ediliyor.
+    relocate 'com.kbskyblock.colorapi', 'com.kbskyblock.libs.colorapi'
+
+    // teams modülünün bağımlılıkları
     relocate 'com.j256.ormlite', 'com.kbskyblock.libs.ormlite'
     relocate 'org.bstats', 'com.kbskyblock.libs.bstats'
-    relocate 'com.fasterxml.jackson', 'com.kbskyblock.libs.jackson'
-    // ... ihtiyaç duyulan diğer tüm relocate'ler ...
-}
 
-tasks.build.dependsOn(tasks.shadowJar)
+    // Ortak kullanılan kütüphaneler
+    relocate 'com.cryptomorin.xseries', 'com.kbskyblock.libs.xseries'
+    relocate 'io.papermc.paperlib', 'com.kbskyblock.libs.paperlib'
+    relocate 'org.apache.commons.lang3', 'com.kbskyblock.libs.commonslang3'
+    relocate 'commons-lang', 'com.kbskyblock.libs.commonslang2'
+}
 
 processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        filesMatching('plugin.yml') {
-            expand(
-                    version: project.version,
-                    name: "KBSkyblock" // Proje ismini doğrudan yazabilirsin
-            )
-        }
+    filesMatching('plugin.yml') {
+        expand(
+                version: project.version,
+                name: "KBSkyblock-Core" // Plugin ismini buradan yönetebilirsin
+        )
     }
 }
+
+// build görevi bittiğinde shadowJar'ı çalıştır
+tasks.build.dependsOn tasks.shadowJar

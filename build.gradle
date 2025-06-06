@@ -1,22 +1,35 @@
-// --- YENİ root/build.gradle ---
 plugins {
-    // Pluginleri burada tanımlıyoruz ama her modülde ayrıca uygulayacağız. 'apply false' bu anlama gelir.
-    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
-    id 'java-library' apply false
-    id 'java' apply false
+    id 'java'
+    id 'java-library'
+    // shadow plugin'i buradan uygulamanın bir anlamı yok, sadece ana plugin modülünde uygulanacak.
+    // Bu yüzden 'apply false' ile tanımlamaya da gerek yok, settings.gradle'de olması yeterli.
 }
 
-// Tüm alt projeler için ortak yapılandırma
+// 'allprojects' yerine 'subprojects' kullanmak daha doğru.
+// 'allprojects' root projeyi de kapsar, 'subprojects' ise sadece alt modülleri.
 subprojects {
-    // Her alt projeye 'java-library' uyguluyoruz. Bu, modüllerin birbirini daha iyi anlamasını sağlar.
-    // Sadece son birleştirme modülü olan 'core:plugin' içinde bunu 'java' olarak ezeceğiz.
+    apply plugin: 'java'
     apply plugin: 'java-library'
 
     group = 'com.kbskyblock'
     version = '1.0.0-SNAPSHOT'
 
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://repo.codemc.io/repository/maven-public/" }
+        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://repo.papermc.io/repository/maven-public/' }
+        maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+        maven { url 'https.repo.essentialsx.net/releases/' }
+    }
+
     java {
         toolchain {
+            // Java 17 kullanıyordun, bu tüm projeler için varsayılan olsun.
+            // İhtiyaç halinde modül kendi içinde bunu override edebilir.
             languageVersion = JavaLanguageVersion.of(17)
         }
     }
@@ -25,20 +38,40 @@ subprojects {
         options.encoding = 'UTF-8'
     }
 
-    repositories {
-        mavenCentral()
-        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        maven { url 'https://jitpack.io' }
-        maven { url 'https://repo.papermc.io/repository/maven-public/' }
-        maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
-        maven { url 'https://repo.essentialsx.net/releases/' }
-        // Not: Tekrar eden repository'leri kaldırdım.
-    }
+    // Buradaki tüm 'dependencies' ve 'shadowJar' blokları KALDIRILDI.
+    // Her modül kendi bağımlılığını kendi build.gradle dosyasında yönetecek.
+}
+
+// Multiversion modülleri için ortak yapılandırma burada kalabilir, çünkü bu bir desen.
+project(':core:multiversion').subprojects {
+    // Bu modüllerin ana Java sürümünü 17 olarak ayarlayalım.
+    // Spigot API'leri daha eski olsa bile, kodun Java 17 ile derlenmesinde bir sakınca yok.
+    java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
     dependencies {
-        // Lombok, tüm projeler için ortak bir derleme bağımlılığıdır.
-        compileOnly 'org.projectlombok:lombok:1.18.30'
-        annotationProcessor 'org.projectlombok:lombok:1.18.30'
+        // Tüm versiyon modülleri 'common' modülüne bağlı olmalı
+        implementation project(':core:multiversion:common')
+
+        // XSeries gibi ortak bağımlılıkları buraya ekleyelim
+        implementation 'com.github.cryptomorin:XSeries:11.0.0' // Sürüm güncellendi
+        implementation 'io.papermc:paperlib:1.0.8'
+
+        // Spigot API'sini dinamik olarak ekle
+        if (project.name != 'common' && project.name != 'default') {
+            def mcVersion = project.name.replace('v', '').replace('_', '.')
+            // Regex ile daha temiz bir versiyon çıkarımı yapılabilir ama bu da çalışır.
+            def spigotVersion = "${mcVersion}-R0.1-SNAPSHOT"
+            compileOnly "org.spigotmc:spigot-api:${spigotVersion}"
+        }
+    }
+}
+
+// core:multiversion:common için özel ayarlar
+project(':core:multiversion:common') {
+    dependencies {
+        // Bu modül belirli bir Spigot sürümüne compileOnly ile bağlı olabilir.
+        compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT' // En son sürüme göre ayarlandı
+        implementation 'com.github.cryptomorin:XSeries:11.0.0'
+        implementation 'io.papermc:paperlib:1.0.8'
     }
 }
