@@ -4,8 +4,8 @@ plugins {
 
 dependencies {
     // Ana modüllere bağımlılık
-    implementation project(':core:api')
-    implementation project(':core:common')
+    implementation project(':core:plugin')
+    implementation project(':core:plugin')
 
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.30'
@@ -21,14 +21,5 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.11.6'
     compileOnly('net.essentialsx:EssentialsX:2.20.1') {
         exclude group: 'org.spigotmc', module: 'spigot-api'
-    }
-}
-
-processResources {
-    filesMatching('plugin.yml') {
-        expand(
-                version: project.version,
-                name: "KBSkyblock-Teams"
-        )
     }
 }

@@ -11,15 +11,12 @@ pluginManagement {
 rootProject.name = 'KBSkyblock'
 
 // Main modules
-include 'core'
 include 'colorapi'
 include 'teams'
 
 // Core submodules
 include 'core:plugin'
 include 'core:multiversion'
-include 'core:api'
-include 'core:common'
 
 // Multiversion modules
 def multiversionDir = file('core/multiversion')
