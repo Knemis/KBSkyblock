@@ -27,7 +27,7 @@ dependencies {
     implementation 'org.yaml:snakeyaml:2.2'
 
     // Spigot API (compileOnly olmalı, çünkü sunucuda zaten var)
-    compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT' // Desteklenen en son sürüm
+    compileOnly 'org.spigotmc:spigot-api:1.13-R0.1-SNAPSHOT' // Desteklenen en son sürüm
 
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.30'
@@ -48,7 +48,7 @@ shadowJar {
 
     // colorapi modülünün bağımlılıkları (burada da relocate edilmeli)
     // colorapi'nin kendisi de relocate ediliyor.
-    relocate 'com.kbskyblock.colorapi', 'com.kbskyblock.libs.colorapi'
+    // relocate 'com.kbskyblock.colorapi', 'com.kbskyblock.libs.colorapi' // Temporarily removed
 
     // teams modülünün bağımlılıkları
     relocate 'com.j256.ormlite', 'com.kbskyblock.libs.ormlite'

@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT'
+    compileOnly 'org.bukkit:bukkit:1.13-R0.1-SNAPSHOT'
 
     // API'yi dışarıya sunmak için 'api' kullan, implementasyon detayı ise 'implementation'
     api 'com.fasterxml.jackson.core:jackson-databind:2.17.1'

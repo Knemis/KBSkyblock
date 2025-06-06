@@ -30,12 +30,13 @@ subprojects {
         toolchain {
             // Java 17 kullanıyordun, bu tüm projeler için varsayılan olsun.
             // İhtiyaç halinde modül kendi içinde bunu override edebilir.
-            languageVersion = JavaLanguageVersion.of(17)
+            languageVersion = JavaLanguageVersion.of(8)
         }
     }
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
+        options.release.set(8)
     }
 
     // Buradaki tüm 'dependencies' ve 'shadowJar' blokları KALDIRILDI.
@@ -46,7 +47,7 @@ subprojects {
 project(':core:multiversion').subprojects {
     // Bu modüllerin ana Java sürümünü 17 olarak ayarlayalım.
     // Spigot API'leri daha eski olsa bile, kodun Java 17 ile derlenmesinde bir sakınca yok.
-    java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+    java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
     dependencies {
         // Tüm versiyon modülleri 'common' modülüne bağlı olmalı
@@ -63,15 +64,5 @@ project(':core:multiversion').subprojects {
             def spigotVersion = "${mcVersion}-R0.1-SNAPSHOT"
             compileOnly "org.spigotmc:spigot-api:${spigotVersion}"
         }
-    }
-}
-
-// core:multiversion:common için özel ayarlar
-project(':core:multiversion:common') {
-    dependencies {
-        // Bu modül belirli bir Spigot sürümüne compileOnly ile bağlı olabilir.
-        compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT' // En son sürüme göre ayarlandı
-        implementation 'com.github.cryptomorin:XSeries:11.0.0'
-        implementation 'io.papermc:paperlib:1.0.8'
     }
 }
