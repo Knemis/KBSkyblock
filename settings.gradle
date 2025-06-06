@@ -17,6 +17,7 @@ include 'teams'
 // Core submodules
 include 'core:plugin'
 include 'core:multiversion'
+include 'core:apibase'
 
 // Multiversion modules
 def multiversionDir = file('core/multiversion')
@@ -29,6 +30,7 @@ if (multiversionDir.exists()) {
     }
 }
 
+// toolchainManagement removed for now as it was causing issues.
 
 // Add submodules for each main module
 ['teams', 'colorapi'].each { module ->

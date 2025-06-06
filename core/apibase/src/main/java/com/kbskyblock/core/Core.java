@@ -4,7 +4,6 @@ import com.kbskyblock.core.gui.GUI;
 import com.kbskyblock.core.multiversion.CoreInventory;
 import com.kbskyblock.core.multiversion.MultiVersion;
 import com.kbskyblock.core.nms.NMS;
-import com.kbskyblock.teams.managers.TeamManager;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,7 +36,6 @@ public class Core extends JavaPlugin {
     private BukkitTask saveTask;
 
     private static Core instance;
-    private TeamManager teamManager;
     /**
      * Constructor used for UnitTests
      */

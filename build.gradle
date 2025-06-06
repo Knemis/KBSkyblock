@@ -30,13 +30,13 @@ subprojects {
         toolchain {
             // Java 17 kullanıyordun, bu tüm projeler için varsayılan olsun.
             // İhtiyaç halinde modül kendi içinde bunu override edebilir.
-            languageVersion = JavaLanguageVersion.of(8)
+            languageVersion = JavaLanguageVersion.of(17)
         }
     }
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
-        options.release.set(8)
+        options.release.set(17)
     }
 
     // Buradaki tüm 'dependencies' ve 'shadowJar' blokları KALDIRILDI.
@@ -47,11 +47,13 @@ subprojects {
 project(':core:multiversion').subprojects {
     // Bu modüllerin ana Java sürümünü 17 olarak ayarlayalım.
     // Spigot API'leri daha eski olsa bile, kodun Java 17 ile derlenmesinde bir sakınca yok.
-    java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+    java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
     dependencies {
-        // Tüm versiyon modülleri 'common' modülüne bağlı olmalı
-        implementation project(':core:multiversion:common')
+        // Apply this dependency only if the subproject is NOT 'common'
+        if (project.name != 'common') {
+            implementation project(':core:multiversion:common')
+        }
 
         // XSeries gibi ortak bağımlılıkları buraya ekleyelim
         implementation 'com.github.cryptomorin:XSeries:11.0.0' // Sürüm güncellendi

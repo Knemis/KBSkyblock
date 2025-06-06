@@ -1,0 +1,32 @@
+plugins {
+    id 'java-library'
+}
+
+// Assuming Java 8 is standard for the project based on root build.gradle
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release.set(17)
+}
+
+dependencies {
+    api 'io.papermc:paperlib:1.0.8'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // Dependency for MultiVersion classes used in Core.java (NMS, MultiVersion, CoreInventory)
+    // and also for Persist if it's considered part of the multiversion structure's common API.
+    // The Core.java also references com.kbskyblock.core.gui.GUI
+    // If GUI is not in multiversion:common, this might need adjustment.
+    // For now, assuming these are accessible via :core:multiversion:common or :core:multiversion
+    // Let's be more specific for now and use :core:multiversion:common as it's usually smaller.
+    api project(':core:multiversion:common')
+
+    // Spigot API, as Core extends JavaPlugin
+    compileOnly 'org.spigotmc:spigot-api:1.13-R0.1-SNAPSHOT' // Version from core:plugin
+}

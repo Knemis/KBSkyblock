@@ -9,6 +9,7 @@ plugins {
 
 dependencies {
     // Projenin diğer tüm modüllerini implementation ile ekle
+    implementation project(':core:apibase')
     implementation project(':colorapi')
     implementation project(':teams')
 

@@ -4,8 +4,8 @@ plugins {
 
 dependencies {
     // Ana modüllere bağımlılık
-    implementation project(':core:plugin')
-    implementation project(':core:plugin')
+    implementation project(':core:apibase')
+    implementation project(':core:apibase')
 
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.30'
