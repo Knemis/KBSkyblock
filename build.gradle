@@ -60,11 +60,11 @@ project(':core:multiversion').subprojects {
         implementation 'io.papermc:paperlib:1.0.8'
 
         // Spigot API'sini dinamik olarak ekle
-        if (project.name != 'common' && project.name != 'default') {
-            def mcVersion = project.name.replace('v', '').replace('_', '.')
-            // Regex ile daha temiz bir versiyon çıkarımı yapılabilir ama bu da çalışır.
-            def spigotVersion = "${mcVersion}-R0.1-SNAPSHOT"
-            compileOnly "org.spigotmc:spigot-api:${spigotVersion}"
-        }
+//        if (project.name != 'common' && project.name != 'default') {
+//            def mcVersion = project.name.replace('v', '').replace('_', '.')
+//            // Regex ile daha temiz bir versiyon çıkarımı yapılabilir ama bu da çalışır.
+//            def spigotVersion = "${mcVersion}-R0.1-SNAPSHOT"
+//            compileOnly "org.spigotmc:spigot-api:${spigotVersion}"
+//        }
     }
 }

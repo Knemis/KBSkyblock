@@ -3,6 +3,7 @@ repositories {
 
 dependencies {
     // compileOnly 'org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT' // Intend to use paper-api from root project
+    compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT' // Added Paper API
     compileOnly project(':core:multiversion:common')
     compileOnly 'io.papermc:paperlib:1.0.8'
 }

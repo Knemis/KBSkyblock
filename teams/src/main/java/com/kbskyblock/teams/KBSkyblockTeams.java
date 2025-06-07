@@ -164,6 +164,7 @@ public abstract class KBSkyblockTeams<T extends Team, U extends KBSkyblockUser<T
         }, 0, 0);
     }
 
+    @Override
     public void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new BlockBreakListener<>(this), this);
         Bukkit.getPluginManager().registerEvents(new BlockBurnListener<>(this), this);
@@ -202,16 +203,19 @@ public abstract class KBSkyblockTeams<T extends Team, U extends KBSkyblockUser<T
         Bukkit.getPluginManager().registerEvents(new PlayerBucketListener<>(this), this);
     }
 
+    @Override
     public void saveData() {
 
     }
 
+    @Override
     public void loadConfigs() {
         userRanks.putAll(getConfiguration().userRanks);
         userRanks.put(Rank.VISITOR.getId(), getConfiguration().visitor);
         userRanks.put(Rank.OWNER.getId(), getConfiguration().owner);
     }
 
+    @Override
     public void saveConfigs() {
 
     }

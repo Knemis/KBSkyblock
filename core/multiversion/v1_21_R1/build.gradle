@@ -1,0 +1,7 @@
+dependencies {
+    // User must ensure "org.spigotmc:spigot:1.21" (or the exact version they built)
+    // is available in their local Maven repository via BuildTools.
+    compileOnly "org.spigotmc:spigot:1.21"
+    compileOnly project(':core:multiversion:common')
+    compileOnly 'io.papermc:paperlib:1.0.8' // If other multiversion modules use it
+}

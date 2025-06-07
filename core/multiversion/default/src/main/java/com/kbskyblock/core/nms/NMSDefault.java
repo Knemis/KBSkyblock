@@ -1,7 +1,8 @@
 package com.kbskyblock.core.nms;
 
 import com.kbskyblock.core.Color;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -48,30 +49,30 @@ public class NMSDefault implements NMS {
      */
     @Override
     public void sendWorldBorder(Player player, Color color, double size, Location centerLocation) {
-        WorldBorder worldBorder = Bukkit.getServer().createWorldBorder();
-
-        if (centerLocation.getWorld().getEnvironment() == World.Environment.NETHER) {
-            worldBorder.setCenter(centerLocation.getBlockX() * 8 + 0.5, centerLocation.getBlockZ() * 8 + 0.5);
-        } else {
-            worldBorder.setCenter(centerLocation.getBlockX() + 0.5, centerLocation.getBlockZ() + 0.5);
-        }
-
-        if (color == Color.OFF) {
-            worldBorder.setSize(Integer.MAX_VALUE);
-        } else {
-            worldBorder.setSize(size);
-        }
-
-        worldBorder.setDamageAmount(0);
-        worldBorder.setDamageBuffer(0);
-
-        if (color == Color.RED) {
-            worldBorder.setSize(size - 0.1D, 20000000L);
-        } else if (color == Color.GREEN) {
-            worldBorder.setSize(size + 0.1D, 20000000L);
-        }
-
-        player.setWorldBorder(worldBorder);
+        // WorldBorder worldBorder = Bukkit.getServer().createWorldBorder();
+        //
+        // if (centerLocation.getWorld().getEnvironment() == World.Environment.NETHER) {
+        //     worldBorder.setCenter(centerLocation.getBlockX() * 8 + 0.5, centerLocation.getBlockZ() * 8 + 0.5);
+        // } else {
+        //     worldBorder.setCenter(centerLocation.getBlockX() + 0.5, centerLocation.getBlockZ() + 0.5);
+        // }
+        //
+        // if (color == Color.OFF) {
+        //     worldBorder.setSize(Integer.MAX_VALUE);
+        // } else {
+        //     worldBorder.setSize(size);
+        // }
+        //
+        // worldBorder.setDamageAmount(0);
+        // worldBorder.setDamageBuffer(0);
+        //
+        // if (color == Color.RED) {
+        //     worldBorder.setSize(size - 0.1D, 20000000L);
+        // } else if (color == Color.GREEN) {
+        //     worldBorder.setSize(size + 0.1D, 20000000L);
+        // }
+        //
+        // player.setWorldBorder(worldBorder);
     }
 
     /**

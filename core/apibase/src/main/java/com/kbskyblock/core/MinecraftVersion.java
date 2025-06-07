@@ -1,0 +1,71 @@
+package com.kbskyblock.core;
+
+import com.kbskyblock.core.multiversion.*;
+import com.kbskyblock.core.nms.*;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Supplier;
+
+@SuppressWarnings("Convert2MethodRef")
+public enum MinecraftVersion {
+
+    /**
+     * IntelliJ will recommend you to replace these with method reference.
+     * However, this would break the plugins on some machines running the HotSpot VM.
+     * Just leave this as it is and add new versions down below in the same way.
+     */
+    DEFAULT(() -> new NMSDefault(), MultiversionDefault::new, CoreInventoryDefault::new),
+    V1_13_R1(() -> new NMS_V1_13_R1(), MultiVersion_V1_13_R1::new, CoreInventory_V1_13_R1::new),
+    V1_13_R2(() -> new NMS_V1_13_R2(), MultiVersion_V1_13_R2::new, CoreInventory_V1_13_R2::new),
+    V1_14_R1(() -> new NMS_V1_14_R1(), MultiVersion_V1_14_R1::new, CoreInventory_V1_14_R1::new),
+    V1_15_R1(() -> new NMS_V1_15_R1(), MultiVersion_V1_15_R1::new, CoreInventory_V1_15_R1::new),
+    V1_16_R1(() -> new NMS_V1_16_R1(), MultiVersion_V1_16_R1::new, CoreInventory_V1_16_R1::new),
+    V1_16_R2(() -> new NMS_V1_16_R2(), MultiVersion_V1_16_R2::new, CoreInventory_V1_16_R2::new),
+    V1_16_R3(() -> new NMS_V1_16_R3(), MultiVersion_V1_16_R3::new, CoreInventory_V1_16_R3::new),
+    V1_17_R1(() -> new NMS_V1_17_R1(), MultiVersion_V1_17_R1::new, CoreInventory_V1_17_R1::new),
+    V1_18_R1(() -> new NMS_V1_18_R1(), MultiVersion_V1_18_R1::new, CoreInventory_V1_18_R1::new),
+    V1_18_R2(() -> new NMS_V1_18_R2(), MultiVersion_V1_18_R2::new, CoreInventory_V1_18_R2::new),
+    V1_19_R1(() -> new NMS_V1_19_R1(), MultiVersion_V1_19_R1::new, CoreInventory_V1_19_R1::new),
+    V1_19_R2(() -> new NMS_V1_19_R2(), MultiVersion_V1_19_R2::new, CoreInventory_V1_19_R2::new),
+    V1_19_R3(() -> new NMS_V1_19_R3(), MultiVersion_V1_19_R3::new, CoreInventory_V1_19_R3::new),
+    V1_20_R1(() -> new NMS_V1_20_R1(), MultiVersion_V1_20_R1::new, CoreInventory_V1_20_R1::new),
+    V1_20_R2(() -> new NMS_V1_20_R2(), MultiVersion_V1_20_R2::new, CoreInventory_V1_20_R2::new),
+    V1_20_R3(() -> new NMS_V1_20_R3(), MultiVersion_V1_20_R3::new, CoreInventory_V1_20_R3::new),
+    V1_20_R4(() -> new NMS_V1_20_R4(), MultiVersion_V1_20_R4::new, CoreInventory_V1_20_R4::new),
+    V1_21_R1(() -> new NMS_V1_21_R1(), MultiVersion_V1_21_R1::new, CoreInventory_V1_21_R1::new);
+
+    private final Supplier<NMS> nmsSupplier;
+    private final JavaPluginSupplier<MultiVersion> multiVersionSupplier;
+    private final Supplier<CoreInventory> inventorySupplier;
+
+    MinecraftVersion(Supplier<NMS> nmsSupplier, JavaPluginSupplier<MultiVersion> multiVersionSupplier, Supplier<CoreInventory> inventorySupplier) {
+        this.nmsSupplier = nmsSupplier;
+        this.multiVersionSupplier = multiVersionSupplier;
+        this.inventorySupplier = inventorySupplier;
+    }
+
+    public NMS getNms() {
+        return nmsSupplier.get();
+    }
+
+    public MultiVersion getMultiVersion(JavaPlugin javaPlugin) {
+        return multiVersionSupplier.get(javaPlugin);
+    }
+
+    public CoreInventory getInventory() {
+        return inventorySupplier.get();
+    }
+
+    @NotNull
+    public static MinecraftVersion byName(String version) {
+        for (MinecraftVersion minecraftVersion : values()) {
+            if (minecraftVersion.name().equalsIgnoreCase(version)) {
+                return minecraftVersion;
+            }
+        }
+
+        return DEFAULT;
+    }
+
+}

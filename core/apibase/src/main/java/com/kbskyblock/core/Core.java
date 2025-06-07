@@ -1,6 +1,5 @@
 package com.kbskyblock.core;
 
-import com.kbskyblock.core.gui.GUI;
 import com.kbskyblock.core.multiversion.CoreInventory;
 import com.kbskyblock.core.multiversion.MultiVersion;
 import com.kbskyblock.core.nms.NMS;
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
@@ -26,7 +24,6 @@ import java.io.File;
 @NoArgsConstructor
 public class Core extends JavaPlugin {
 
-    private com.kbskyblock.core.Persist persist;
     private NMS nms;
     private MultiVersion multiVersion;
     private CoreInventory coreInventory;
@@ -57,7 +54,6 @@ public class Core extends JavaPlugin {
         getDataFolder().mkdir();
 
         // Initialize the configs
-        this.persist = new Persist(Persist.PersistType.YAML, this);
         loadConfigs();
         saveConfigs();
     }
@@ -83,14 +79,6 @@ public class Core extends JavaPlugin {
 
         // Save data regularly
         saveTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, this::saveData, 0, 20 * 60 * 5);
-
-        // Automatically update all inventories
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
-            InventoryHolder inventoryHolder = CoreInventory.getTopInventory(player).getHolder();
-            if (inventoryHolder instanceof GUI) {
-                ((GUI) inventoryHolder).addContent(CoreInventory.getTopInventory(player));
-            }
-        }), 0, 1);
     }
 
     /**
@@ -129,7 +117,7 @@ public class Core extends JavaPlugin {
         if (Bukkit.getVersion().contains("1.20.5") || Bukkit.getVersion().contains("1.20.6")) {
             this.nms = MinecraftVersion.V1_20_R4.getNms();
             this.multiVersion = MinecraftVersion.V1_20_R4.getMultiVersion(this);
-            this.iridiumInventory = MinecraftVersion.V1_20_R4.getInventory();
+            this.coreInventory = MinecraftVersion.V1_20_R4.getInventory();
             return;
         }
 
@@ -139,18 +127,17 @@ public class Core extends JavaPlugin {
 
             this.nms = minecraftVersion.getNms();
             this.multiVersion = minecraftVersion.getMultiVersion(this);
-            this.iridiumInventory = minecraftVersion.getInventory();
+            this.coreInventory = minecraftVersion.getInventory();
         } catch (Exception exception) {
             this.nms = MinecraftVersion.DEFAULT.getNms();
             this.multiVersion = MinecraftVersion.DEFAULT.getMultiVersion(this);
-            this.iridiumInventory = MinecraftVersion.DEFAULT.getInventory();
+            this.coreInventory = MinecraftVersion.DEFAULT.getInventory();
         }
     }
 
     /**
      * Loads the configurations required for this plugin.
      *
-     * @see Persist
      */
     public void loadConfigs() {
     }
@@ -159,7 +146,6 @@ public class Core extends JavaPlugin {
     /**
      * Saves changes to the configuration files.
      *
-     * @see Persist
      */
     public void saveConfigs() {
     }

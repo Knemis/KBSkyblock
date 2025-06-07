@@ -24,8 +24,29 @@ def multiversionDir = file('core/multiversion')
 if (multiversionDir.exists()) {
     multiversionDir.eachDir { dir ->
         def moduleName = dir.name
-        if (!moduleName.startsWith('.')) {
-            include "core:multiversion:${moduleName}"
+        if (!moduleName.startsWith('.')) { // Ignore hidden files/dirs
+            if (moduleName == 'common' || moduleName == 'default') {
+                include "core:multiversion:${moduleName}"
+            } else if (moduleName.startsWith('v')) {
+                // Attempt to parse version like vMajor_Minor_Revision (e.g., v1_12_R1)
+                def versionParts = moduleName.substring(1).split('_')
+                if (versionParts.length >= 2) { // Need at least Major and Minor
+                    try {
+                        int majorVersion = Integer.parseInt(versionParts[0])
+                        int minorVersion = Integer.parseInt(versionParts[1])
+
+                        // Include if version is 1.13 or newer
+                        // (major > 1 means 2.x, etc., which are newer)
+                        // (major == 1 && minorVersion >= 13 means 1.13, 1.14, ...)
+                        if (majorVersion > 1 || (majorVersion == 1 && minorVersion >= 13)) {
+                            include "core:multiversion:${moduleName}"
+                        }
+                    } catch (NumberFormatException e) {
+                        // Directory name is not a valid version format, ignore it
+                        println "Skipping multiversion module with invalid format: ${moduleName}"
+                    }
+                }
+            }
         }
     }
 }
